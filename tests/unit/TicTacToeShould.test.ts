@@ -1,4 +1,6 @@
-import { TicTacToe, TicTacToePosition, TicTacToeState } from '../../src/domain/TicTacToe';
+jest.mock('../../src/domain/TicTacToe');
+import { TicTacToeTurn, TicTacToeTurns, XTurn, OTurn } from '../../src/domain/TicTacToe';
+const { TicTacToe, TicTacToePosition, TicTacToeState } = jest.requireActual('../../src/domain/TicTacToe');
 
 
 /*X always goes first
@@ -11,29 +13,55 @@ Recommendation: try to implement the rules in order*/
 describe('TicTacToe should', () => {
   
   test('start with X being the current player', () => {
-    const ticTacToe: TicTacToe = new TicTacToe();
+    const xTurn : XTurn = new XTurn();
+
+    class TestTicTacToe extends TicTacToe {
+      protected turn: TicTacToeTurn = xTurn; 
+    }
+
+    const ticTacToe: TestTicTacToe = new TestTicTacToe();
 
     expect(ticTacToe.getState()).toBe(TicTacToeState.X_PLAYS);
   });
 
   test('switch player to O when currentPlayer is X', () => {
-    const ticTacToe: TicTacToe = new TicTacToe();
+    const xTurn : XTurn = new XTurn();
+
+    xTurn.switch = jest.fn(() => {
+      return new OTurn();
+    });
+
+    class TestTicTacToe extends TicTacToe {
+      protected turn: TicTacToeTurn = xTurn; 
+    }
+
+    const ticTacToe: TestTicTacToe = new TestTicTacToe();
 
     const nextState = ticTacToe.play(TicTacToePosition.UPPER_LEFT);
 
     expect(nextState).toBe(TicTacToeState.O_PLAYS);
+
+    expect(xTurn.switch).toBeCalledTimes(1);
   });
 
   test('switch player to X when currentPlayer is O', () => {
+    const oTurn : OTurn = new OTurn();
+
+    oTurn.switch = jest.fn(() => {
+      return new XTurn();
+    });
+    
     class StartsWithOTicTacToe extends TicTacToe {
-      protected state: TicTacToeState = TicTacToeState.O_PLAYS;
+      protected turn: TicTacToeTurn = oTurn;
     }
 
-    const ticTacToe: TicTacToe = new StartsWithOTicTacToe();
+    const ticTacToe = new StartsWithOTicTacToe();
 
     const nextState = ticTacToe.play(TicTacToePosition.UPPER_LEFT);
 
     expect(nextState).toBe(TicTacToeState.X_PLAYS);
+
+    expect(oTurn.switch).toBeCalledTimes(1);
   });
 
 });

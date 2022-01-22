@@ -20,4 +20,16 @@ describe('in a tic-tac-toe game', () => {
     expect(nextState).toBe(TicTacToeState.X_PLAYS);
   });
 
+  test.skip('players cannot play in a played position', () => {
+    const ticTacToe: TicTacToe = new TicTacToe();
+
+    const playInPlayedPosition = () => {
+      let nextState = ticTacToe.play(TicTacToePosition.UPPER_LEFT);
+      nextState = ticTacToe.play(TicTacToePosition.UPPER_LEFT);
+    };
+    
+    expect(playInPlayedPosition).toThrow(Error);
+    expect(playInPlayedPosition).toThrow("This position is already played");
+  });
+
 });
