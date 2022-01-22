@@ -1,6 +1,9 @@
-jest.mock('../../src/domain/TicTacToe');
-import { TicTacToeTurn, TicTacToeTurns, XTurn, OTurn } from '../../src/domain/TicTacToe';
-const { TicTacToe, TicTacToePosition, TicTacToeState } = jest.requireActual('../../src/domain/TicTacToe');
+import OTurn from '../../src/domain/OTurn';
+jest.mock('../../src/domain/OTurn');
+import TicTacToeTurn from '../../src/domain/TicTacToeTurn';
+import XTurn from '../../src/domain/XTurn';
+jest.mock('../../src/domain/XTurn');
+import { TicTacToe, TicTacToePosition, TicTacToeState } from '../../src/domain/TicTacToe';
 
 
 /*X always goes first

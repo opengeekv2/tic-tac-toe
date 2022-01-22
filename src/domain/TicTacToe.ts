@@ -1,3 +1,6 @@
+import TicTacToeTurn from "./TicTacToeTurn";
+import XTurn from "./XTurn";
+
 export enum TicTacToeState {
     X_PLAYS = 'X_PLAYS',
     O_PLAYS = 'O_PLAYS' 
@@ -6,10 +9,6 @@ export enum TicTacToeState {
 export enum TicTacToePosition {
     UPPER_LEFT = '',
     UPPER_RIGHT = ''
-}
-
-export interface TicTacToeTurn {
-    switch(): TicTacToeTurn
 }
 
 export class TicTacToeTurnHandler {
@@ -28,23 +27,6 @@ export class TicTacToeTurnHandler {
         return this.state;
     }
 }
-
-export class XTurn {
-    switch(): TicTacToeTurn {
-        return new OTurn();
-    }
-}
-
-export class OTurn {
-    switch(): TicTacToeTurn {
-        return new XTurn();
-    }
-}
-
-export const TicTacToeTurns = {
-    X_TURN: new XTurn(),
-    O_TURN: new OTurn()
-};
 
 export class TicTacToe {
     protected state: TicTacToeState = TicTacToeState.X_PLAYS;
