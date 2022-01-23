@@ -4,6 +4,8 @@ import TicTacToeTurn from '../../src/domain/TicTacToeTurn';
 import XTurn from '../../src/domain/XTurn';
 jest.mock('../../src/domain/XTurn');
 import { TicTacToe, TicTacToePosition, TicTacToeState } from '../../src/domain/TicTacToe';
+import TicTacToeBoard from '../../src/domain/TicTacToeBoard';
+jest.mock('../../src/domain/TicTacToeBoard');
 
 
 /*X always goes first
@@ -40,7 +42,7 @@ describe('TicTacToe should', () => {
 
     const ticTacToe: TestTicTacToe = new TestTicTacToe();
 
-    const nextState = ticTacToe.play(TicTacToePosition.UPPER_LEFT);
+    const nextState = ticTacToe.play(TicTacToePosition.UP_LEFT);
 
     expect(nextState).toBe(TicTacToeState.O_PLAYS);
 
@@ -60,11 +62,48 @@ describe('TicTacToe should', () => {
 
     const ticTacToe = new StartsWithOTicTacToe();
 
-    const nextState = ticTacToe.play(TicTacToePosition.UPPER_LEFT);
+    const nextState = ticTacToe.play(TicTacToePosition.UP_LEFT);
 
     expect(nextState).toBe(TicTacToeState.X_PLAYS);
 
     expect(oTurn.switch).toBeCalledTimes(1);
+  });
+
+  test.each(Object.values(TicTacToePosition))('set moves on the board', (move: TicTacToePosition) => {
+    const board: TicTacToeBoard = new TicTacToeBoard();
+
+    board.play = jest.fn((position: TicTacToePosition) => {})
+
+    class TestTicTacToe extends TicTacToe {
+      protected board: TicTacToeBoard = board;
+    }
+
+    const ticTacToe = new TestTicTacToe();
+
+    ticTacToe.play(move)
+
+    expect(board.play).toBeCalledWith(move);
+  });
+
+  test.each(Object.values(TicTacToePosition))('throw board exceptions', (move: TicTacToePosition) => {
+    const board: TicTacToeBoard = new TicTacToeBoard();
+
+    board.play = jest.fn((position: TicTacToePosition) => {
+      throw new Error('This position is already played');
+    });
+
+    class TestTicTacToe extends TicTacToe {
+      protected board: TicTacToeBoard = board;
+    }
+
+    const ticTacToe = new TestTicTacToe();
+
+    const callPlay = () => {
+      ticTacToe.play(move)
+    }
+    
+    expect(callPlay).toThrow(Error);
+    expect(callPlay).toThrow('This position is already played');
   });
 
 });

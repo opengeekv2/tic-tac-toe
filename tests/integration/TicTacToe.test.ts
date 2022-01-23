@@ -14,22 +14,24 @@ describe('in a tic-tac-toe game', () => {
     const ticTacToe: TicTacToe = new TicTacToe();
 
     expect(ticTacToe.getState()).toBe(TicTacToeState.X_PLAYS);
-    let nextState = ticTacToe.play(TicTacToePosition.UPPER_LEFT);
+    let nextState = ticTacToe.play(TicTacToePosition.UP_LEFT);
     expect(nextState).toBe(TicTacToeState.O_PLAYS);
-    nextState = ticTacToe.play(TicTacToePosition.UPPER_RIGHT);
+    nextState = ticTacToe.play(TicTacToePosition.UP_RIGHT);
     expect(nextState).toBe(TicTacToeState.X_PLAYS);
   });
 
-  test.skip('players cannot play in a played position', () => {
+  test.each(Object.values(TicTacToePosition))('next player cannot play in a played position', (position: TicTacToePosition) => {
     const ticTacToe: TicTacToe = new TicTacToe();
 
+    Object.values(TicTacToePosition).forEach(position => {
+      ticTacToe.play(position);
+    })
+
     const playInPlayedPosition = () => {
-      let nextState = ticTacToe.play(TicTacToePosition.UPPER_LEFT);
-      nextState = ticTacToe.play(TicTacToePosition.UPPER_LEFT);
+      let nextState = ticTacToe.play(position);
     };
     
     expect(playInPlayedPosition).toThrow(Error);
-    expect(playInPlayedPosition).toThrow("This position is already played");
+    expect(playInPlayedPosition).toThrow('This position is already played');
   });
-
 });

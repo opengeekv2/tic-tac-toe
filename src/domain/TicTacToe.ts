@@ -1,3 +1,4 @@
+import TicTacToeBoard from "./TicTacToeBoard";
 import TicTacToeTurn from "./TicTacToeTurn";
 import XTurn from "./XTurn";
 
@@ -7,35 +8,25 @@ export enum TicTacToeState {
 }
 
 export enum TicTacToePosition {
-    UPPER_LEFT = '',
-    UPPER_RIGHT = ''
-}
-
-export class TicTacToeTurnHandler {
-    protected state: TicTacToeState = TicTacToeState.X_PLAYS;
-
-    play(position: TicTacToePosition) {
-        if (this.state == TicTacToeState.X_PLAYS)  {
-            this.state = TicTacToeState.O_PLAYS;
-            return this.state;
-        }
-        this.state = TicTacToeState.X_PLAYS;
-        return this.state;
-    }
-
-    getState() {
-        return this.state;
-    }
+    UP_LEFT = 'UP_LEFT',
+    UP_CENTRE = 'UP_CENTRE',
+    UP_RIGHT = 'UP_RIGHT',
+    CENTRE_LEFT = 'CENTRE_LEFT',
+    CENTRE_CENTRE = 'CENTRE_CENTRE',
+    CENTRE_RIGHT = 'CENTRE_RIGHT',
+    DOWN_LEFT = 'DOWN_LEFT',
+    DOWN_CENTRE = 'DOWN_CENTRE',
+    DOWN_RIGHT = 'DOWN_RIGHT',
 }
 
 export class TicTacToe {
     protected state: TicTacToeState = TicTacToeState.X_PLAYS;
     protected turn: TicTacToeTurn = new XTurn();
+    protected board: TicTacToeBoard = new TicTacToeBoard();
     
     play(position: TicTacToePosition) {
+        this.board.play(position);
         this.turn = this.turn.switch();
-        console.log(this.turn);
-        console.log(this.turn instanceof XTurn);
         if (this.turn instanceof XTurn)  {
             return TicTacToeState.X_PLAYS;
         }
