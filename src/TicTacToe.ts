@@ -1,9 +1,9 @@
 export default class TictacToe {
     play(position: object, player: string): boolean {
-        if (player === 'X') {
-            return true;
+        if (player !== 'X') {
+            throw new Error('Error');
         }
+        return true;
 
-        return false;
     }
 }
