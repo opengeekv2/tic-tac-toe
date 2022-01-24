@@ -1,5 +1,9 @@
 export default class TictacToe {
     play(position: object, player: string): boolean {
-        return true;
+        if (player === 'X') {
+            return true;
+        }
+
+        return false;
     }
 }

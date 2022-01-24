@@ -13,6 +13,12 @@ describe("Tic Tac Toe", () => {
         expect(output).toBe(false);
     })
 
+    it("should not allow a unknown player", () => {
+        const ticTacToe: TicTacToe = new TicTacToe();
+        const unknownPlayer = 'T';
+        const output = ticTacToe.play({x: 0, y: 0}, unknownPlayer);
+        expect(output).toBe(false);
+    })
 
 
 })
