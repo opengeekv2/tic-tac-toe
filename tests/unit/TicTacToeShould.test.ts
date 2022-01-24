@@ -3,7 +3,7 @@ jest.mock('../../src/domain/OTurn');
 import TicTacToeTurn from '../../src/domain/TicTacToeTurn';
 import XTurn from '../../src/domain/XTurn';
 jest.mock('../../src/domain/XTurn');
-import { TicTacToe, TicTacToePosition, TicTacToeState } from '../../src/domain/TicTacToe';
+import { TicTacToe, TicTacToePosition, TicTacToeState, TicTacToeToken } from '../../src/domain/TicTacToe';
 import TicTacToeBoard from '../../src/domain/TicTacToeBoard';
 jest.mock('../../src/domain/TicTacToeBoard');
 
@@ -72,7 +72,9 @@ describe('TicTacToe should', () => {
   test.each(Object.values(TicTacToePosition))('set moves on the board', (move: TicTacToePosition) => {
     const board: TicTacToeBoard = new TicTacToeBoard();
 
-    board.play = jest.fn((position: TicTacToePosition) => {})
+    board.play = jest.fn((position: TicTacToePosition, token?: TicTacToeToken) => {
+      return null;
+    })
 
     class TestTicTacToe extends TicTacToe {
       protected board: TicTacToeBoard = board;
@@ -88,7 +90,7 @@ describe('TicTacToe should', () => {
   test.each(Object.values(TicTacToePosition))('throw board exceptions', (move: TicTacToePosition) => {
     const board: TicTacToeBoard = new TicTacToeBoard();
 
-    board.play = jest.fn((position: TicTacToePosition) => {
+    board.play = jest.fn((position: TicTacToePosition, token?: TicTacToeToken) => {
       throw new Error('This position is already played');
     });
 
@@ -101,9 +103,24 @@ describe('TicTacToe should', () => {
     const callPlay = () => {
       ticTacToe.play(move)
     }
-    
+
     expect(callPlay).toThrow(Error);
     expect(callPlay).toThrow('This position is already played');
+  });
+
+  test('return X_WINS when x wins', () => {
+    const board: TicTacToeBoard = new TicTacToeBoard();
+    board.play = jest.fn((position: TicTacToePosition, token?: TicTacToeToken) => {
+      return TicTacToeState.X_WINS;
+    });
+    class TestTicTacToe extends TicTacToe {
+      protected board: TicTacToeBoard = board;
+    }
+
+    const ticTacToe: TicTacToe = new TestTicTacToe();
+    const state: TicTacToeState = ticTacToe.play(TicTacToePosition.CENTRE_CENTRE);
+
+    expect(state).toBe(TicTacToeState.X_WINS);
   });
 
 });

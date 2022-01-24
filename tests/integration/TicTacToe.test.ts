@@ -10,6 +10,12 @@ Recommendation: try to implement the rules in order*/
 
 describe('in a tic-tac-toe game', () => {
   
+  test('x always goes first', () => {
+    const ticTacToe: TicTacToe = new TicTacToe();
+
+    expect(ticTacToe.getState()).toBe(TicTacToeState.X_PLAYS);
+  });
+  
   test('players alternate placing Xs and Os on the board', () => {
     const ticTacToe: TicTacToe = new TicTacToe();
 
@@ -33,5 +39,18 @@ describe('in a tic-tac-toe game', () => {
     
     expect(playInPlayedPosition).toThrow(Error);
     expect(playInPlayedPosition).toThrow('This position is already played');
+  });
+});
+
+describe('A player with 3 X’s or 3 O’s in a row (vertically, horizontally or diagonally) wins the game', () => {
+  test('A player gets 3 X in the first vertical', () => {
+    const ticTactToe: TicTacToe = new TicTacToe();
+    ticTactToe.play(TicTacToePosition.UP_RIGHT);
+    ticTactToe.play(TicTacToePosition.DOWN_RIGHT);
+    ticTactToe.play(TicTacToePosition.UP_CENTRE);
+    ticTactToe.play(TicTacToePosition.DOWN_CENTRE);
+    const state = ticTactToe.play(TicTacToePosition.UP_LEFT);
+
+    expect(state).toBe(TicTacToeState.X_WINS);
   });
 });
