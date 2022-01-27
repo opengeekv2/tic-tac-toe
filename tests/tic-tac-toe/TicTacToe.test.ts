@@ -28,29 +28,29 @@ describe("Tic Tac Toe", () => {
 
     it("should switch player X to O", () => {
         ticTacToe.play({x: 0, y: 0}, 'X');
-        const output = ticTacToe.play({x: 0, y: 0}, 'O');
+        const output = ticTacToe.play({x: 0, y: 1}, 'O');
         expect(output).toBe(true);
     });
 
     it("should not let X player play twice", () => {
         ticTacToe.play({x: 0, y: 0}, 'X');
          expect(() => {
-            ticTacToe.play({x: 0, y: 0}, 'X');
+            ticTacToe.play({x: 0, y: 1}, 'X');
         }).toThrowError("A player can't play twice");
     });
 
     it("should not let O player play twice after X", () => {
         ticTacToe.play({x: 0, y: 0}, 'X');
-        ticTacToe.play({x: 0, y: 0}, 'O');
+        ticTacToe.play({x: 0, y: 1}, 'O');
          expect(() => {
-            ticTacToe.play({x: 0, y: 0}, 'O');
+            ticTacToe.play({x: 0, y: 2}, 'O');
         }).toThrowError("A player can't play twice");
     });
 
     it("should let X player play after O", () => {
         ticTacToe.play({x: 0, y: 0}, 'X');
-        ticTacToe.play({x: 0, y: 0}, 'O');
-        const output = ticTacToe.play({x: 0, y: 0}, 'X');
+        ticTacToe.play({x: 0, y: 1}, 'O');
+        const output = ticTacToe.play({x: 0, y: 2}, 'X');
         expect(output).toBe(true);
     });
 
@@ -58,7 +58,7 @@ describe("Tic Tac Toe", () => {
         ticTacToe.play({x: 0, y: 0}, 'X');
         expect(() => {
             ticTacToe.play({x: 0, y: 0}, 'O');
-        }).toThrowError("A player can't play on a played position");
+        }).toThrowError("A player can't do the same move twice");
 
     });
 
