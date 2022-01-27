@@ -23,7 +23,18 @@ describe("Tic Tac Toe", () => {
     })
 
     it("should switch player X to O", () => {
-        
+        const ticTacToe: TicTacToe = new TicTacToe();
+        ticTacToe.play({x: 0, y: 0}, 'X');
+        const output = ticTacToe.play({x: 0, y: 0}, 'O');
+        expect(output).toBe(true);
+    })
+
+    it("should not let X player play twice", () => {
+        const ticTacToe: TicTacToe = new TicTacToe();
+        ticTacToe.play({x: 0, y: 0}, 'X');
+         expect(() => {
+            ticTacToe.play({x: 0, y: 0}, 'X');
+        }).toThrowError();
     })
 
 
