@@ -5,7 +5,8 @@
   },
   "scripts": {
     "run": "npx ts-node src/index.ts",
-    "test": "npx jest"
+    "test": "npx jest",
+    "test:watch": "npx jest --watchAll"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
