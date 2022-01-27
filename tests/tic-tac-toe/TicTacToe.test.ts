@@ -10,7 +10,7 @@ describe("Tic Tac Toe", () => {
     it("should not allow player O to start", () => {
         const ticTacToe: TicTacToe = new TicTacToe();
         expect(() => {
-            const output = ticTacToe.play({x: 0, y: 0}, 'O');
+            ticTacToe.play({x: 0, y: 0}, 'O');
         }).toThrowError();
     })
 
@@ -18,7 +18,7 @@ describe("Tic Tac Toe", () => {
         const ticTacToe: TicTacToe = new TicTacToe();
         const unknownPlayer = 'T';
         expect(() => {
-            const output = ticTacToe.play({x: 0, y: 0}, unknownPlayer);
+            ticTacToe.play({x: 0, y: 0}, unknownPlayer);
         }).toThrowError();
     })
 
