@@ -47,4 +47,19 @@ describe("Tic Tac Toe", () => {
         }).toThrowError("A player can't play twice");
     });
 
+    it("should let X player play after O", () => {
+        ticTacToe.play({x: 0, y: 0}, 'X');
+        ticTacToe.play({x: 0, y: 0}, 'O');
+        const output = ticTacToe.play({x: 0, y: 0}, 'X');
+        expect(output).toBe(true);
+    });
+
+    it("should not let O play on an already played position", () => {
+        ticTacToe.play({x: 0, y: 0}, 'X');
+        expect(() => {
+            ticTacToe.play({x: 0, y: 0}, 'O');
+        }).toThrowError("A player can't play on a played position");
+
+    });
+
 });
