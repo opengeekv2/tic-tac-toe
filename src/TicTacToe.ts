@@ -3,6 +3,12 @@ interface Position {
     y: number;
 }
 
+export class PlayedTwiceError extends Error {
+    constructor(message: string) {
+        super(`PlayedTwiceError: ${message}`);
+    }
+}
+
 export default class TictacToe {
 
     playerTurn = "X";
@@ -10,7 +16,7 @@ export default class TictacToe {
 
     play(position: Position, player: string): boolean {
         if (player !== this.playerTurn ) {
-            throw new Error("A player can't play twice");
+            throw new PlayedTwiceError("A player can't play twice");
         }
         const samePosition = this.moves.find( pastMoves  => {
             return (pastMoves.x === position.x && pastMoves.y === position.y);
