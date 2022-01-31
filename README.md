@@ -11,7 +11,7 @@
 - [X] Refactor de las excepciones
 - [X] Extracción de funciones
 - [X] Extraer clausula de guarda
-- [ ] Tipar usuarios
+- [X] Tipar usuarios
 - [ ] Hacer test con cambios de posición en eje X
 - [ ] Parametrizar jugadas
 - [ ] Añadir editorconfig al repo
