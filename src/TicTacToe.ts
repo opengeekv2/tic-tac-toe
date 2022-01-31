@@ -3,20 +3,26 @@ interface Position {
     y: number;
 }
 
+
+export const Player =  {
+    'X': 'X',
+    'O': 'O'
+}
+
 export class OutOfTurnError extends Error {
-    constructor(message: string) {
+    constructor(message?: string) {
         super(`OutOfTurnError: ${message}`);
     }
 }
 
 export class SameMoveTwiceError extends Error {
-    constructor(message: string) {
+    constructor(message?: string) {
         super(`SameMoveTwiceError: ${message}`);
     }
 }
 
 export class UnknownPlayerError extends Error {
-    constructor(message: string) {
+    constructor(message?: string) {
         super(`UnknownPlayerError: ${message}`);
     }
 }
@@ -33,17 +39,17 @@ export default class TictacToe {
     }
 
     private switchToNextPlayer(): void {
-        if (this.playerTurn == 'O') {
-            this.playerTurn = 'X';
+        if (this.playerTurn == Player.O) {
+            this.playerTurn = Player.X;
 
             return;
         }
 
-        this.playerTurn = 'O';
+        this.playerTurn = Player.O;
     }
 
     private isValidPlayer(player: string): boolean {
-        return ['X', 'O'].includes(player);
+        return player === Player.O || player === Player.X;
     }
 
     play(position: Position, player: string): boolean {
