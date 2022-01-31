@@ -1,4 +1,4 @@
-import TicTacToe, {OutOfTurnError, SameMoveTwiceError, UnknownPlayerError, Player} from "../../src/TicTacToe";
+import TicTacToe, {OutOfTurnError, SameMoveTwiceError, UnknownPlayerError, Player, PlayerClass} from "../../src/TicTacToe";
 
 describe("Tic Tac Toe", () => {
 
@@ -9,7 +9,7 @@ describe("Tic Tac Toe", () => {
     });
 
     it("should allow player X to start", () => {
-        const output = ticTacToe.play({x: 0, y: 0}, Player.X);
+        const output = ticTacToe.play({x: 0, y: 0}, PlayerClass.X());
         expect(output).toBe(true);
     });
 
