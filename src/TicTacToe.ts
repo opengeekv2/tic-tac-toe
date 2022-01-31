@@ -26,8 +26,18 @@ export default class TictacToe {
         }));
     }
 
+    private switchToNextPlayer(): void {
+        if (this.playerTurn == 'O') {
+            this.playerTurn = 'X';
+
+            return;
+        }
+
+        this.playerTurn = "O";
+    }
+
     play(position: Position, player: string): boolean {
-        if (player !== this.playerTurn ) {
+        if (player !== this.playerTurn) {
             throw new OutOfTurnError("A player can't play twice");
         }
 
@@ -35,12 +45,9 @@ export default class TictacToe {
             throw new SameMoveTwiceError("A player can't do the same move twice");
         }
         this.moves.push(position);
-        if (player == 'O') {
-            this.playerTurn = 'X';
-            return true
-        }
-        this.playerTurn = "O";
-        return true;
 
+        this.switchToNextPlayer();
+
+        return true;
     }
 }
