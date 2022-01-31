@@ -3,13 +3,7 @@ interface Position {
     y: number;
 }
 
-
-export const Player =  {
-    'X': 'X',
-    'O': 'O'
-}
-
-export class PlayerClass {
+export class Player {
     private name: string
     
     private constructor(name: string) {
@@ -17,7 +11,15 @@ export class PlayerClass {
     }
 
     static X() {
-        return new PlayerClass('X')
+        return new Player('X')
+    }
+
+    static O() {
+        return new Player('O')
+    }
+
+    equals(other: Player): boolean {
+        return other.name === this.name;
     }
 }
 
@@ -41,7 +43,7 @@ export class UnknownPlayerError extends Error {
 
 export default class TictacToe {
 
-    playerTurn: string = Player.X;
+    playerTurn: Player = Player.X();
     moves: Array<Position> = [];
 
     private hasBeenPlayed(position: Position): boolean {
@@ -51,25 +53,17 @@ export default class TictacToe {
     }
 
     private switchToNextPlayer(): void {
-        if (this.playerTurn == Player.O) {
-            this.playerTurn = Player.X;
+        if (this.playerTurn.equals(Player.O())) {
+            this.playerTurn = Player.X();
 
             return;
         }
 
-        this.playerTurn = Player.O;
+        this.playerTurn = Player.O();
     }
 
-    private isValidPlayer(player: string|PlayerClass): boolean {
-        return player === Player.O || player === Player.X;
-    }
-
-    play(position: Position, player: string|PlayerClass): boolean {
-        if (typeof player == 'string' && !this.isValidPlayer(player)) {
-            throw new UnknownPlayerError()
-        }
-
-        if (typeof player == 'string' && player !== this.playerTurn) {
+    play(position: Position, player: Player): boolean {
+        if (!player.equals(this.playerTurn)) {
             throw new OutOfTurnError("A player can't play twice");
         }
 
