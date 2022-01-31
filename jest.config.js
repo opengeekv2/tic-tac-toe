@@ -1,10 +1,20 @@
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  globals: {
-    'ts-jest': {
-        isolatedModules: true
+  "projects": [
+    {
+      displayName: 'lint',
+      runner: 'jest-runner-eslint',
+    },
+    {
+      displayName: 'test',
+      preset: 'ts-jest',
+      testEnvironment: 'node',
+      globals: {
+        'ts-jest': {
+          isolatedModules: true
+        } 
+      },
     }
-  },
+  ]
 };
+
