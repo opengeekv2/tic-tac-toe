@@ -1,4 +1,4 @@
-import TicTacToe, {OutOfTurnError, SameMoveTwiceError} from "../../src/TicTacToe";
+import TicTacToe, {OutOfTurnError, SameMoveTwiceError, UnknownPlayerError} from "../../src/TicTacToe";
 
 describe("Tic Tac Toe", () => {
 
@@ -19,11 +19,16 @@ describe("Tic Tac Toe", () => {
         }).toThrowError(OutOfTurnError);
     });
 
-    it("should not allow a unknown player", () => {
+    it("should not allow an unknown player", () => {
         const unknownPlayer = 'T';
         expect(() => {
             ticTacToe.play({x: 0, y: 0}, unknownPlayer);
-        }).toThrowError(OutOfTurnError);
+        }).toThrowError(UnknownPlayerError);
+
+        expect(() => {
+            ticTacToe.play({x: 0, y: 0}, 'X');
+            ticTacToe.play({x: 0, y: 1}, unknownPlayer);
+        }).toThrowError(UnknownPlayerError);
     })
 
     it("should switch player X to O", () => {
@@ -58,7 +63,7 @@ describe("Tic Tac Toe", () => {
         ticTacToe.play({x: 0, y: 0}, 'X');
         expect(() => {
             ticTacToe.play({x: 0, y: 0}, 'O');
-        }).toThrowError("A player can't do the same move twice");
+        }).toThrowError(SameMoveTwiceError);
 
     });
 

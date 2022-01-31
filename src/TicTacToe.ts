@@ -15,9 +15,15 @@ export class SameMoveTwiceError extends Error {
     }
 }
 
+export class UnknownPlayerError extends Error {
+    constructor(message: string) {
+        super(`UnknownPlayerError: ${message}`);
+    }
+}
+
 export default class TictacToe {
 
-    playerTurn = "X";
+    playerTurn: string = "X";
     moves: Array<Position> = [];
 
     private hasBeenPlayed(position: Position): boolean {
@@ -33,10 +39,18 @@ export default class TictacToe {
             return;
         }
 
-        this.playerTurn = "O";
+        this.playerTurn = 'O';
+    }
+
+    private isValidPlayer(player: string): boolean {
+        return ['X', 'O'].includes(player);
     }
 
     play(position: Position, player: string): boolean {
+        if (!this.isValidPlayer(player)) {
+            throw new UnknownPlayerError()
+        }
+
         if (player !== this.playerTurn) {
             throw new OutOfTurnError("A player can't play twice");
         }
