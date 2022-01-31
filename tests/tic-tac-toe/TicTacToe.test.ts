@@ -1,4 +1,4 @@
-import TicTacToe, {PlayedTwiceError} from "../../src/TicTacToe";
+import TicTacToe, {PlayedTwiceError, SameMoveTwiceError} from "../../src/TicTacToe";
 
 describe("Tic Tac Toe", () => {
 
@@ -59,6 +59,14 @@ describe("Tic Tac Toe", () => {
         expect(() => {
             ticTacToe.play({x: 0, y: 0}, 'O');
         }).toThrowError("A player can't do the same move twice");
+
+    });
+
+    it("should not let O play on an already played position", () => {
+        ticTacToe.play({x: 0, y: 0}, 'X');
+        expect(() => {
+            ticTacToe.play({x: 0, y: 0}, 'O');
+        }).toThrowError(SameMoveTwiceError);
 
     });
 

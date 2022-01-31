@@ -9,6 +9,12 @@ export class PlayedTwiceError extends Error {
     }
 }
 
+export class SameMoveTwiceError extends Error {
+    constructor(message: string) {
+        super(`SameMoveTwiceError: ${message}`);
+    }
+}
+
 export default class TictacToe {
 
     playerTurn = "X";
@@ -23,7 +29,7 @@ export default class TictacToe {
         });
 
         if (samePosition) {
-            throw new Error("A player can't do the same move twice");
+            throw new SameMoveTwiceError("A player can't do the same move twice");
         }
         this.moves.push(position);
         if (player == 'O') {
