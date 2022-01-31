@@ -1,4 +1,4 @@
-import TicTacToe, {PlayedTwiceError, SameMoveTwiceError} from "../../src/TicTacToe";
+import TicTacToe, {OutOfTurnError, SameMoveTwiceError} from "../../src/TicTacToe";
 
 describe("Tic Tac Toe", () => {
 
@@ -16,14 +16,14 @@ describe("Tic Tac Toe", () => {
     it("should not allow player O to start", () => {
         expect(() => {
             ticTacToe.play({x: 0, y: 0}, 'O');
-        }).toThrowError(PlayedTwiceError);
+        }).toThrowError(OutOfTurnError);
     });
 
     it("should not allow a unknown player", () => {
         const unknownPlayer = 'T';
         expect(() => {
             ticTacToe.play({x: 0, y: 0}, unknownPlayer);
-        }).toThrowError(PlayedTwiceError);
+        }).toThrowError(OutOfTurnError);
     })
 
     it("should switch player X to O", () => {
@@ -36,7 +36,7 @@ describe("Tic Tac Toe", () => {
         ticTacToe.play({x: 0, y: 0}, 'X');
          expect(() => {
             ticTacToe.play({x: 0, y: 1}, 'X');
-        }).toThrowError(PlayedTwiceError);
+        }).toThrowError(OutOfTurnError);
     });
 
     it("should not let O player play twice after X", () => {
@@ -44,7 +44,7 @@ describe("Tic Tac Toe", () => {
         ticTacToe.play({x: 0, y: 1}, 'O');
          expect(() => {
             ticTacToe.play({x: 0, y: 2}, 'O');
-        }).toThrowError(PlayedTwiceError);
+        }).toThrowError(OutOfTurnError);
     });
 
     it("should let X player play after O", () => {

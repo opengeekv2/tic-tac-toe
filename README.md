@@ -8,8 +8,8 @@
 
 
 # TODO:
-- [ ] Refactor de las excepciones
-- [ ] Extracción de funciones
+- [X] Refactor de las excepciones
+- [X] Extracción de funciones
 - [ ] Extraer clausula de guarda
 - [ ] Tipar usuarios
 - [ ] Hacer test con cambios de posición en eje X
