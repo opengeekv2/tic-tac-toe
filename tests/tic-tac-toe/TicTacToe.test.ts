@@ -1,4 +1,4 @@
-import TicTacToe, {OutOfTurnError, SameMoveTwiceError, Player, Position} from "../../src/TicTacToe";
+import TicTacToe, {OutOfTurnError, SameMoveTwiceError, Player} from "../../src/TicTacToe";
 
 describe("Tic Tac Toe", () => {
 
@@ -55,17 +55,39 @@ describe("Tic Tac Toe", () => {
 
     });
 
-    it.each([
-        [
-            {x: 0, y: 0},
-            {x: 0, y: 1}
-        ],[
-            {x: 0, y: 0},
-            {x: 1, y: 0},
-        ]] as Position[][])("should not let O play on an already played position x", (positionX: Position, positionO: Position) => {
-        const output = ticTacToe.play(positionX, Player.X());
-        ticTacToe.play(positionO, Player.O());
-        expect(output).toBe(true);
+    it('prevents player to play on an already taken position', () => {
+        expect(() => {
+            play([
+                { player: Player.X(), x: 0, y: 0 },
+                { player: Player.O(), x: 0, y: 0 },
+            ])
+        }).toThrowError(SameMoveTwiceError);
     });
 
+    it('allows player to play on the same row', () => {
+        expect(
+            play([
+                { player: Player.X(), x: 0, y: 0 },
+                { player: Player.O(), x: 0, y: 1 },
+            ])
+        ).toBe(true)
+    });
+
+    it('allows player to play on the same column', () => {
+        expect(
+            play([
+                { player: Player.X(), x: 0, y: 0 },
+                { player: Player.O(), x: 1, y: 0 },
+            ])
+        ).toBe(true)
+    });
+
+    function play(moves: Array<{ player: Player, x: number, y: number }>): boolean {
+        let output = false;
+        for (const {player, x, y} of moves) {
+            output = ticTacToe.play({ x, y }, player);
+        }
+
+        return output;
+    }
 });
