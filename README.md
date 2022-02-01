@@ -12,6 +12,6 @@
 - [X] Extracción de funciones
 - [X] Extraer clausula de guarda
 - [X] Tipar usuarios
-- [ ] Hacer test con cambios de posición en eje X
-- [ ] Parametrizar jugadas
+- [X] Hacer test con cambios de posición en eje X
+- [X] Parametrizar jugadas
 - [ ] Añadir editorconfig al repo
