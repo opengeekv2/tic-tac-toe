@@ -1,5 +1,25 @@
 import TicTacToe, {OutOfTurnError, SameMoveTwiceError, Player} from "../../src/TicTacToe";
 
+const PLAYER_X_PLAYING_TWICE_IN_A_ROW = [
+            { player: Player.X(), x: 0, y: 0 },
+            { player: Player.X(), x: 1, y: 0 },
+        ];
+const PLAYER_O_PLAYING_TWICE_IN_A_ROW = [
+            { player: Player.X(), x: 0, y: 0 },
+            { player: Player.O(), x: 1, y: 0 },
+            { player: Player.O(), x: 2, y: 0 },
+        ];
+const PLAYER_O_STARTS_FIRST = [
+            { player: Player.O(), x: 1, y: 0 }
+        ];
+
+interface TestMove {
+    player: Player,
+    x: number,
+    y: number;
+}
+
+
 describe("Tic Tac Toe", () => {
 
     let ticTacToe: TicTacToe;
@@ -13,31 +33,21 @@ describe("Tic Tac Toe", () => {
         expect(output).toBe(true);
     });
 
-    it("should not allow player O to start", () => {
-        expect(() => {
-            ticTacToe.play({x: 0, y: 0}, Player.O());
-        }).toThrowError(OutOfTurnError);
-    });
-
     it("should switch player X to O", () => {
         ticTacToe.play({x: 0, y: 0}, Player.X());
         const output = ticTacToe.play({x: 0, y: 1}, Player.O());
         expect(output).toBe(true);
     });
 
-    it("should not let X player play twice", () => {
-        ticTacToe.play({x: 0, y: 0}, Player.X());
-         expect(() => {
-            ticTacToe.play({x: 0, y: 1}, Player.X());
+    it.each([
+    [ PLAYER_X_PLAYING_TWICE_IN_A_ROW ],
+    [ PLAYER_O_PLAYING_TWICE_IN_A_ROW ],
+    [ PLAYER_O_STARTS_FIRST ]
+  ])('should prevent the wrong player of playing out of turn', (moves: Array<TestMove>) => {
+        expect(() => {
+            play(moves)
         }).toThrowError(OutOfTurnError);
-    });
 
-    it("should not let O player play twice after X", () => {
-        ticTacToe.play({x: 0, y: 0}, Player.X());
-        ticTacToe.play({x: 0, y: 1}, Player.O());
-         expect(() => {
-            ticTacToe.play({x: 0, y: 2}, Player.O());
-        }).toThrowError(OutOfTurnError);
     });
 
     it("should let X player play after O", () => {
@@ -82,7 +92,7 @@ describe("Tic Tac Toe", () => {
         ).toBe(true)
     });
 
-    function play(moves: Array<{ player: Player, x: number, y: number }>): boolean {
+    function play(moves: Array<TestMove>): boolean {
         let output = false;
         for (const {player, x, y} of moves) {
             output = ticTacToe.play({ x, y }, player);
