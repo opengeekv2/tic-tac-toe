@@ -1,4 +1,4 @@
-import TicTacToe, {OutOfTurnError, SameMoveTwiceError, Player} from "../../src/TicTacToe";
+import TicTacToe, {OutOfTurnError, SameMoveTwiceError, Player, Position} from "../../src/TicTacToe";
 
 describe("Tic Tac Toe", () => {
 
@@ -55,11 +55,17 @@ describe("Tic Tac Toe", () => {
 
     });
 
-    it("should not let O play on an already played position", () => {
-        ticTacToe.play({x: 0, y: 0}, Player.X());
-        expect(() => {
-            ticTacToe.play({x: 0, y: 0}, Player.O());
-        }).toThrowError(SameMoveTwiceError);
+    it.each([
+        [
+            {x: 0, y: 0},
+            {x: 0, y: 1}
+        ],[
+            {x: 0, y: 0},
+            {x: 1, y: 0},
+        ]] as Position[][])("should not let O play on an already played position x", (positionX: Position, positionO: Position) => {
+        const output = ticTacToe.play(positionX, Player.X());
+        ticTacToe.play(positionO, Player.O());
+        expect(output).toBe(true);
     });
 
 });
