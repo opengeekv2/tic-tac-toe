@@ -29,13 +29,17 @@ describe("Tic Tac Toe", () => {
     });
 
     it("should allow player X to start", () => {
-        const output = ticTacToe.play({x: 0, y: 0}, Player.X());
+        const output = play([
+            { player: Player.X(), x: 0, y: 0 },
+        ]);
         expect(output).toBe(true);
     });
 
     it("should switch player X to O", () => {
-        ticTacToe.play({x: 0, y: 0}, Player.X());
-        const output = ticTacToe.play({x: 0, y: 1}, Player.O());
+        const output = play([
+            { player: Player.X(), x: 0, y: 0 },
+            { player: Player.O(), x: 0, y: 1 },
+        ]);
         expect(output).toBe(true);
     });
 
@@ -51,18 +55,12 @@ describe("Tic Tac Toe", () => {
     });
 
     it("should let X player play after O", () => {
-        ticTacToe.play({x: 0, y: 0}, Player.X());
-        ticTacToe.play({x: 0, y: 1}, Player.O());
-        const output = ticTacToe.play({x: 0, y: 2}, Player.X());
+        const output = play([
+            { player: Player.X(), x: 0, y: 0 },
+            { player: Player.O(), x: 0, y: 1 },
+            { player: Player.X(), x: 0, y: 2 },
+        ]);
         expect(output).toBe(true);
-    });
-
-    it("should not let O play on an already played position", () => {
-        ticTacToe.play({x: 0, y: 0}, Player.X());
-        expect(() => {
-            ticTacToe.play({x: 0, y: 0}, Player.O());
-        }).toThrowError(SameMoveTwiceError);
-
     });
 
     it('prevents player to play on an already taken position', () => {
@@ -90,6 +88,34 @@ describe("Tic Tac Toe", () => {
                 { player: Player.O(), x: 1, y: 0 },
             ])
         ).toBe(true)
+    });
+
+    it('should grant victory to player X when he puts 3 tokens on the same row', () => {
+        /**
+         * X X X
+         * O O .
+         * . . .
+         */
+        play([
+            { player: Player.X(), x: 0, y: 0 },
+            { player: Player.O(), x: 1, y: 0 },
+            { player: Player.X(), x: 0, y: 1 },
+            { player: Player.O(), x: 1, y: 1 },
+            { player: Player.X(), x: 0, y: 2 },
+        ])
+
+        expect(ticTacToe.getWinner()).toStrictEqual(Player.X())
+    });
+
+    it('should not grant victory to pristine game', () => {
+        /**
+         * . . .
+         * . . .
+         * . . .
+         */
+        play([])
+
+        expect(ticTacToe.getWinner()).toBe(null)
     });
 
     function play(moves: Array<TestMove>): boolean {
