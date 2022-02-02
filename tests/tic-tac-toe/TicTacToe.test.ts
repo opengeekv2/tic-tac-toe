@@ -1,4 +1,4 @@
-import TicTacToe, {OutOfTurnError, SameMoveTwiceError, Player} from "../../src/TicTacToe";
+import TicTacToe, {OutOfTurnError, SameMoveTwiceError, Player, GameOverError} from "../../src/TicTacToe";
 
 const PLAYER_X_PLAYING_TWICE_IN_A_ROW = [
             { player: Player.X(), x: 0, y: 0 },
@@ -134,6 +134,69 @@ describe("Tic Tac Toe", () => {
         ])
 
         expect(ticTacToe.getWinner()).toStrictEqual(Player.O())
+    });
+
+    it('should grant victory to player X when she puts 3 tokens on the same column', () => {
+        /**
+         * X O O
+         * X . .
+         * X . .
+         */
+        play([
+            { player: Player.X(), x: 0, y: 0 },
+            { player: Player.O(), x: 0, y: 1 },
+            { player: Player.X(), x: 1, y: 0 },
+            { player: Player.O(), x: 0, y: 2 },
+            { player: Player.X(), x: 2, y: 0 },
+        ])
+
+        expect(ticTacToe.getWinner()).toStrictEqual(Player.X())
+    });
+
+    it('should prevent the player from playing after a player has won', () => {
+        /**
+         * X O O
+         * X O .
+         * X . .
+         */
+        play([
+            { player: Player.X(), x: 0, y: 0 },
+            { player: Player.O(), x: 0, y: 1 },
+            { player: Player.X(), x: 1, y: 0 },
+            { player: Player.O(), x: 0, y: 2 },
+            { player: Player.X(), x: 2, y: 0 }, // X WON
+        ])
+
+        expect(() => {
+            play([
+                { player: Player.O(), x: 1, y: 1 },
+            ])
+        }).toThrowError(GameOverError);
+
+        expect(ticTacToe.getWinner()).toStrictEqual(Player.X())
+    });
+
+    it('should prevent the player from playing after a player has won', () => {
+        /**
+         * O X O
+         * O X .
+         * . X .
+         */
+        play([
+            { player: Player.X(), x: 0, y: 1 },
+            { player: Player.O(), x: 0, y: 0 },
+            { player: Player.X(), x: 1, y: 1 },
+            { player: Player.O(), x: 0, y: 2 },
+            { player: Player.X(), x: 2, y: 1 }, // X WON
+        ])
+
+        expect(() => {
+            play([
+                { player: Player.O(), x: 1, y: 2 },
+            ])
+        }).toThrowError(GameOverError);
+
+        expect(ticTacToe.getWinner()).toStrictEqual(Player.X())
     });
 
     function play(moves: Array<TestMove>): boolean {

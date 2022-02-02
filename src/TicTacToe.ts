@@ -46,6 +46,12 @@ export class UnknownPlayerError extends Error {
     }
 }
 
+export class GameOverError extends Error {
+    constructor(message?: string) {
+        super(`GameOverError: ${message}`);
+    }
+}
+
 export default class TictacToe {
 
     playerTurn: Player = Player.X();
@@ -73,6 +79,23 @@ export default class TictacToe {
         if (this.hasBeenPlayed(position)) {
             throw new SameMoveTwiceError("A player can't do the same move twice");
         }
+
+        let hasPlayerXWon = Boolean(this.moves.filter(move => {
+            return move.position.y === 0 && move.player.equals(Player.X());
+        }).length === 3);
+
+        if (hasPlayerXWon) {
+            throw new GameOverError("Player X won");
+        }
+
+        hasPlayerXWon = Boolean(this.moves.filter(move => {
+            return move.position.y === 1 && move.player.equals(Player.X());
+        }).length === 3)
+
+        if (hasPlayerXWon) {
+            throw new GameOverError("Player X won");
+        }
+
         this.moves.push({ position, player });
 
         this.switchToNextPlayer();

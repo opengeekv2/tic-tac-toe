@@ -14,4 +14,5 @@
 - [X] Tipar usuarios
 - [X] Hacer test con cambios de posición en eje X
 - [X] Parametrizar jugadas
-- [ ] Añadir editorconfig al repo
+- [X] Añadir editorconfig al repo
+- [ ] To test the diagonal tokens
