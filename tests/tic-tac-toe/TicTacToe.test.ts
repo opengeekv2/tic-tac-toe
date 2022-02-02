@@ -118,6 +118,24 @@ describe("Tic Tac Toe", () => {
         expect(ticTacToe.getWinner()).toBe(null)
     });
 
+    it('should grant victory to player O when she puts 3 tokens on the same row', () => {
+        /**
+         * O O O
+         * X X .
+         * X . .
+         */
+        play([
+            { player: Player.X(), x: 1, y: 0 },
+            { player: Player.O(), x: 0, y: 0 },
+            { player: Player.X(), x: 1, y: 2 },
+            { player: Player.O(), x: 0, y: 1 },
+            { player: Player.X(), x: 2, y: 0 },
+            { player: Player.O(), x: 0, y: 2 },
+        ])
+
+        expect(ticTacToe.getWinner()).toStrictEqual(Player.O())
+    });
+
     function play(moves: Array<TestMove>): boolean {
         let output = false;
         for (const {player, x, y} of moves) {

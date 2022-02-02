@@ -3,6 +3,11 @@ export interface Position {
     y: number;
 }
 
+export interface Move {
+    player: Player;
+    position: Position;
+}
+
 export class Player {
     private name: string
 
@@ -44,17 +49,15 @@ export class UnknownPlayerError extends Error {
 export default class TictacToe {
 
     playerTurn: Player = Player.X();
-    moves: Array<Position> = [];
+    moves: Array<Move> = [];
 
     private hasBeenPlayed(position: Position): boolean {
-        return Boolean(this.moves.find( pastMoves  => {
-            return (pastMoves.x === position.x && pastMoves.y === position.y);
+        return Boolean(this.moves.find( move  => {
+            return (move.position.x === position.x && move.position.y === position.y);
         }));
     }
 
-    private switchToNextPlayer(): void {
-        if (this.playerTurn.equals(Player.O())) {
-            this.playerTurn = Player.X();
+    private switchToNextPlayer(): void { if (this.playerTurn.equals(Player.O())) { this.playerTurn = Player.X();
 
             return;
         }
@@ -70,7 +73,7 @@ export default class TictacToe {
         if (this.hasBeenPlayed(position)) {
             throw new SameMoveTwiceError("A player can't do the same move twice");
         }
-        this.moves.push(position);
+        this.moves.push({ position, player });
 
         this.switchToNextPlayer();
 
@@ -81,6 +84,6 @@ export default class TictacToe {
         if (this.moves.length === 0)
             return null;
 
-        return Player.X();
+        return this.moves[this.moves.length-1].player;
     }
 }
