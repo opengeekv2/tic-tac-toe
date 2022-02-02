@@ -71,6 +71,17 @@ export default class TictacToe {
         this.playerTurn = Player.O();
     }
 
+    throwExceptionWhenxHasWon(): void {
+        for (let i = 0; i < 3; i++) {
+            const won = Boolean(this.moves.filter(move => {
+                return move.position.y === i && move.player.equals(Player.X())
+            }).length === 3)
+            if (won) {
+                throw new GameOverError("Player X won");
+            }
+        }
+    }
+
     play(position: Position, player: Player): boolean {
         if (!player.equals(this.playerTurn)) {
             throw new OutOfTurnError("A player can't play twice");
@@ -80,21 +91,7 @@ export default class TictacToe {
             throw new SameMoveTwiceError("A player can't do the same move twice");
         }
 
-        let hasPlayerXWon = Boolean(this.moves.filter(move => {
-            return move.position.y === 0 && move.player.equals(Player.X());
-        }).length === 3);
-
-        if (hasPlayerXWon) {
-            throw new GameOverError("Player X won");
-        }
-
-        hasPlayerXWon = Boolean(this.moves.filter(move => {
-            return move.position.y === 1 && move.player.equals(Player.X());
-        }).length === 3)
-
-        if (hasPlayerXWon) {
-            throw new GameOverError("Player X won");
-        }
+        this.throwExceptionWhenxHasWon()
 
         this.moves.push({ position, player });
 

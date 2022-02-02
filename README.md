@@ -15,4 +15,5 @@
 - [X] Hacer test con cambios de posición en eje X
 - [X] Parametrizar jugadas
 - [X] Añadir editorconfig al repo
+- [ ] The winner is actually giving us the last player
 - [ ] To test the diagonal tokens

@@ -199,6 +199,29 @@ describe("Tic Tac Toe", () => {
         expect(ticTacToe.getWinner()).toStrictEqual(Player.X())
     });
 
+    it('should prevent the player from playing after a player has won', () => {
+        /**
+         * O O X
+         * O . X
+         * . . X
+         */
+        play([
+            { player: Player.X(), x: 0, y: 2 },
+            { player: Player.O(), x: 0, y: 0 },
+            { player: Player.X(), x: 1, y: 2 },
+            { player: Player.O(), x: 0, y: 1 },
+            { player: Player.X(), x: 2, y: 2 }, // X WON
+        ])
+
+        expect(() => {
+            play([
+                { player: Player.O(), x: 1, y: 0 },
+            ])
+        }).toThrowError(GameOverError);
+
+        expect(ticTacToe.getWinner()).toStrictEqual(Player.X())
+    });
+
     function play(moves: Array<TestMove>): boolean {
         let output = false;
         for (const {player, x, y} of moves) {
