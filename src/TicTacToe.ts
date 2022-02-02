@@ -78,6 +78,9 @@ export default class TictacToe {
     }
 
     getWinner(): Player {
+        if (this.moves.length === 0)
+            return null;
+
         return Player.X();
     }
 }

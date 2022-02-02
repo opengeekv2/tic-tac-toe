@@ -107,6 +107,17 @@ describe("Tic Tac Toe", () => {
         expect(ticTacToe.getWinner()).toStrictEqual(Player.X())
     });
 
+    it('should not grant victory to pristine game', () => {
+        /**
+         * . . .
+         * . . .
+         * . . .
+         */
+        play([])
+
+        expect(ticTacToe.getWinner()).toBe(null)
+    });
+
     function play(moves: Array<TestMove>): boolean {
         let output = false;
         for (const {player, x, y} of moves) {
