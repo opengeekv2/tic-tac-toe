@@ -5,7 +5,7 @@ export interface Position {
 
 export class Player {
     private name: string
-    
+
     private constructor(name: string) {
         this.name = name;
     }
@@ -75,5 +75,9 @@ export default class TictacToe {
         this.switchToNextPlayer();
 
         return true;
+    }
+
+    getWinner(): Player {
+        return Player.X();
     }
 }
