@@ -16,4 +16,10 @@
 - [X] Parametrizar jugadas
 - [X] Añadir editorconfig al repo
 - [ ] The winner is actually giving us the last player
+- [ ] Check rows and diagonals for X
+- [ ] Group tests for wining conditions with it.each()
+- [ ] Improve describes
+- [ ] Improve testing interface
+- [ ] Check for redundant test cases
+- [ ] Check columns, rows and diagonals and O
 - [ ] To test the diagonal tokens
