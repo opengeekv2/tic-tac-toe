@@ -105,7 +105,7 @@ describe("Tic Tac Toe", () => {
             { player: Player.X(), x: 0, y: 2 },
         ])
 
-        expect(ticTacToe.getWinner()).toStrictEqual(Player.X())
+        expect(ticTacToe.getWinner()).toStrictEqual(TictacToeState.X_WINS)
     });
 
     it('should not grant victory to pristine game', () => {
