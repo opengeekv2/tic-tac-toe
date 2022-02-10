@@ -1,3 +1,11 @@
+
+export enum TictacToeState {
+  O_PLAYS,
+  X_PLAYS,
+  O_WINS,
+  X_WINS,
+  TIE
+}
 export interface Position {
     x: number;
     y: number;
@@ -71,7 +79,7 @@ export default class TictacToe {
         this.playerTurn = Player.O();
     }
 
-    throwExceptionWhenxHasWon(): void {
+    throwExceptionWhenXHasWon(): void {
         for (let i = 0; i < 3; i++) {
             const won = Boolean(this.moves.filter(move => {
                 return move.position.y === i && move.player.equals(Player.X())
@@ -82,7 +90,7 @@ export default class TictacToe {
         }
     }
 
-    play(position: Position, player: Player): boolean {
+    play(position: Position, player: Player): TictacToeState | boolean {
         if (!player.equals(this.playerTurn)) {
             throw new OutOfTurnError("A player can't play twice");
         }
@@ -91,7 +99,7 @@ export default class TictacToe {
             throw new SameMoveTwiceError("A player can't do the same move twice");
         }
 
-        this.throwExceptionWhenxHasWon()
+        this.throwExceptionWhenXHasWon()
 
         this.moves.push({ position, player });
 
@@ -100,6 +108,7 @@ export default class TictacToe {
         return true;
     }
 
+    // TODO: to deprecate
     getWinner(): Player {
         if (this.moves.length === 0)
             return null;
