@@ -32,7 +32,7 @@ describe("Tic Tac Toe", () => {
         const output = play([
             { player: Player.X(), x: 0, y: 0 },
         ]);
-        expect(output).toBe(true);
+        expect(output).toBe(TictacToeState.O_PLAYS);
     });
 
     it("should switch player X to O", () => {
@@ -40,7 +40,7 @@ describe("Tic Tac Toe", () => {
             { player: Player.X(), x: 0, y: 0 },
             { player: Player.O(), x: 0, y: 1 },
         ]);
-        expect(output).toBe(true);
+        expect(output).toBe(TictacToeState.X_PLAYS);
     });
 
     it.each([
@@ -220,20 +220,6 @@ describe("Tic Tac Toe", () => {
         }).toThrowError(GameOverError);
 
         expect(ticTacToe.getWinner()).toStrictEqual(Player.X())
-    });
-
-
-    it('should prevent the player from playing after a player has won', () => {
-        /**
-         * . . X
-         * . . .
-         * . . .
-         */
-        const expect: TictacToeState = play([
-            { player: Player.X(), x: 0, y: 2 },
-        ])
-
-        expect(expect).toBe(TictacToeState.O_PLAYS)
     });
 
     function play(moves: Array<TestMove>): TictacToeState | boolean {

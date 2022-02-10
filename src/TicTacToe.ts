@@ -105,7 +105,7 @@ export default class TictacToe {
 
         this.switchToNextPlayer();
 
-        return true;
+        return TictacToeState.O_PLAYS;
     }
 
     // TODO: to deprecate
