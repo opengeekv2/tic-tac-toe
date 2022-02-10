@@ -71,8 +71,8 @@ export default class TictacToe {
         }));
     }
 
-    private switchToNextPlayer(): void { if (this.playerTurn.equals(Player.O())) { this.playerTurn = Player.X();
-
+    private switchToNextPlayer(): void {
+        if (this.playerTurn.equals(Player.O())) { this.playerTurn = Player.X();
             return;
         }
 
@@ -105,7 +105,7 @@ export default class TictacToe {
 
         this.switchToNextPlayer();
 
-        return TictacToeState.O_PLAYS;
+        return Player.O().equals(this.playerTurn) ? TictacToeState.O_PLAYS : TictacToeState.X_PLAYS;
     }
 
     // TODO: to deprecate
