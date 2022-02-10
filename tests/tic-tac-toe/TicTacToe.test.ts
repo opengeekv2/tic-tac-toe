@@ -1,4 +1,4 @@
-import TicTacToe, {OutOfTurnError, SameMoveTwiceError, Player, GameOverError} from "../../src/TicTacToe";
+import TicTacToe, {OutOfTurnError, SameMoveTwiceError, Player, GameOverError, TictacToeState} from "../../src/TicTacToe";
 
 const PLAYER_X_PLAYING_TWICE_IN_A_ROW = [
             { player: Player.X(), x: 0, y: 0 },
@@ -222,7 +222,21 @@ describe("Tic Tac Toe", () => {
         expect(ticTacToe.getWinner()).toStrictEqual(Player.X())
     });
 
-    function play(moves: Array<TestMove>): boolean {
+
+    it('should prevent the player from playing after a player has won', () => {
+        /**
+         * . . X
+         * . . .
+         * . . .
+         */
+        const expect: TictacToeState = play([
+            { player: Player.X(), x: 0, y: 2 },
+        ])
+
+        expect(expect).toBe(TictacToeState.O_PLAYS)
+    });
+
+    function play(moves: Array<TestMove>): TictacToeState | boolean {
         let output = false;
         for (const {player, x, y} of moves) {
             output = ticTacToe.play({ x, y }, player);
