@@ -55,12 +55,13 @@ describe("Tic Tac Toe", () => {
     });
 
     it("should let X player play after O", () => {
-        const output = play([
-            { player: Player.X(), x: 0, y: 0 },
-            { player: Player.O(), x: 0, y: 1 },
-            { player: Player.X(), x: 0, y: 2 },
-        ]);
-        expect(output).toBe(true);
+        expect(() => {
+            play([
+                { player: Player.X(), x: 0, y: 0 },
+                { player: Player.O(), x: 0, y: 1 },
+                { player: Player.X(), x: 0, y: 2 },
+            ]);
+        }).not.toThrowError(OutOfTurnError);
     });
 
     it('prevents player to play on an already taken position', () => {
@@ -73,21 +74,21 @@ describe("Tic Tac Toe", () => {
     });
 
     it('allows player to play on the same row', () => {
-        expect(
-            play([
-                { player: Player.X(), x: 0, y: 0 },
-                { player: Player.O(), x: 0, y: 1 },
-            ])
-        ).toBe(true)
+        expect(() => {
+                play([
+                    {player: Player.X(), x: 0, y: 0},
+                    {player: Player.O(), x: 0, y: 1},
+                ])
+        }).not.toThrowError(SameMoveTwiceError);
     });
 
     it('allows player to play on the same column', () => {
-        expect(
+        expect(() => {
             play([
                 { player: Player.X(), x: 0, y: 0 },
                 { player: Player.O(), x: 1, y: 0 },
             ])
-        ).toBe(true)
+        }).not.toThrowError(SameMoveTwiceError);
     });
 
     it('should grant victory to player X when he puts 3 tokens on the same row', () => {
