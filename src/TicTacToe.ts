@@ -111,7 +111,7 @@ export default class TictacToe {
         }
     }
 
-    play(position: Position, player: Player): TictacToeState | boolean {
+    play(position: Position, player: Player): TictacToeState {
         if (!player.equals(this.playerTurn)) {
             throw new OutOfTurnError("A player can't play twice");
         }
@@ -126,11 +126,17 @@ export default class TictacToe {
 
         this.switchToNextPlayer();
 
-        return Player.O().equals(this.playerTurn) ? TictacToeState.O_PLAYS : TictacToeState.X_PLAYS;
+        const winner = this.getWinner();
+        if ( null !== winner) {
+            return winner;
+        } else {
+            return Player.O().equals(this.playerTurn) ? TictacToeState.O_PLAYS : TictacToeState.X_PLAYS;
+        }
+
     }
 
     // TODO: to deprecate
-    getWinner(): TictacToeState | void {
+    private getWinner(): TictacToeState | null {
         if (true === this.xHasWon()) {
             return TictacToeState.X_WINS;
         }
