@@ -61,7 +61,6 @@ export class GameOverError extends Error {
 }
 
 export default class TictacToe {
-
     playerTurn: Player = Player.X();
     moves: Array<Move> = [];
 
@@ -79,17 +78,18 @@ export default class TictacToe {
         this.playerTurn = Player.O();
     }
 
-    playerHasWon(player: Player): boolean {
-        for (let i = 0; i < 3; i++) {
+    private playerHasWon(player: Player): boolean {
+        const BOARD_SIZE = 3;
+        for (let i = 0; i < BOARD_SIZE; i++) {
             let won = Boolean(this.moves.filter(move => {
                 return move.position.y === i && move.player.equals(player)
-            }).length === 3)
+            }).length === BOARD_SIZE)
             if (won) {
                 return true;
             }
             won = Boolean(this.moves.filter(move => {
                 return move.position.x === i && move.player.equals(player)
-            }).length === 3)
+            }).length === BOARD_SIZE)
             if (won) {
                 return true;
             }
@@ -97,15 +97,15 @@ export default class TictacToe {
         return false;
     }
 
-    xHasWon() {
+    private xHasWon() {
         return this.playerHasWon(Player.X());
     }
 
-    oHasWon() {
+    private oHasWon() {
         return this.playerHasWon(Player.O());
     }
 
-    throwExceptionWhenXHasWon(): void {
+    private throwExceptionWhenXHasWon(): void {
         if (this.xHasWon()) {
             throw new GameOverError("Player X won");
         }
