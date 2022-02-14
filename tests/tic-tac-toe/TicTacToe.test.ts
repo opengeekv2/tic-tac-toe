@@ -36,6 +36,8 @@ const PLAYER_O_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_O = [
     { player: Player.O(), x: 1, y: 0 },
 ];
 
+const NO_MOVES: TestMove[] = [];
+
 interface TestMove {
     player: Player,
     x: number,
@@ -112,7 +114,7 @@ describe("Tic Tac Toe", () => {
          * . . .
          * . . .
          */
-        play([])
+        play(NO_MOVES)
 
         expect(ticTacToe.getWinner()).toBe(null)
     });
