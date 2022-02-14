@@ -13,6 +13,29 @@ const PLAYER_O_STARTS_FIRST = [
             { player: Player.O(), x: 1, y: 0 }
         ];
 
+const PLAYER_O_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_X = [
+    { player: Player.X(), x: 0, y: 0 },
+    { player: Player.O(), x: 0, y: 0 },
+];
+
+const PLAYER_X_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_O = [
+    { player: Player.X(), x: 0, y: 0 },
+    { player: Player.O(), x: 0, y: 0 },
+];
+
+const   PLAYER_X_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_X = [
+    { player: Player.X(), x: 0, y: 0 },
+    { player: Player.O(), x: 1, y: 0 },
+    { player: Player.X(), x: 0, y: 0 },
+];
+
+const PLAYER_O_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_O = [
+    { player: Player.X(), x: 0, y: 0 },
+    { player: Player.O(), x: 1, y: 0 },
+    { player: Player.X(), x: 2, y: 0 },
+    { player: Player.O(), x: 1, y: 0 },
+];
+
 interface TestMove {
     player: Player,
     x: number,
@@ -54,41 +77,16 @@ describe("Tic Tac Toe", () => {
 
     });
 
-    it("should let X player play after O", () => {
+    it.each([
+        [ PLAYER_O_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_X ],
+        [ PLAYER_X_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_O ],
+        [ PLAYER_X_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_X ],
+        [ PLAYER_O_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_O ],
+    ])('prevents players to play on an already taken position', (moves: Array<TestMove>) => {
         expect(() => {
-            play([
-                { player: Player.X(), x: 0, y: 0 },
-                { player: Player.O(), x: 0, y: 1 },
-                { player: Player.X(), x: 0, y: 2 },
-            ]);
-        }).not.toThrowError(OutOfTurnError);
-    });
-
-    it('prevents player to play on an already taken position', () => {
-        expect(() => {
-            play([
-                { player: Player.X(), x: 0, y: 0 },
-                { player: Player.O(), x: 0, y: 0 },
-            ])
+            play(moves)
         }).toThrowError(SameMoveTwiceError);
-    });
 
-    it('allows player to play on the same row', () => {
-        expect(() => {
-                play([
-                    {player: Player.X(), x: 0, y: 0},
-                    {player: Player.O(), x: 0, y: 1},
-                ])
-        }).not.toThrowError(SameMoveTwiceError);
-    });
-
-    it('allows player to play on the same column', () => {
-        expect(() => {
-            play([
-                { player: Player.X(), x: 0, y: 0 },
-                { player: Player.O(), x: 1, y: 0 },
-            ])
-        }).not.toThrowError(SameMoveTwiceError);
     });
 
     it('should grant victory to player X when he puts 3 tokens on the same row', () => {
