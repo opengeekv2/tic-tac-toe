@@ -224,7 +224,7 @@ describe("Tic Tac Toe", () => {
     });
 
     function play(moves: Array<TestMove>): TictacToeState | boolean {
-        let output = false;
+        let output: TictacToeState | boolean = false;
         for (const {player, x, y} of moves) {
             output = ticTacToe.play({ x, y }, player);
         }
