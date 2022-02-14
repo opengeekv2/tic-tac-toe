@@ -246,6 +246,23 @@ describe("Tic Tac Toe", () => {
         expect(outcome).toStrictEqual(TictacToeState.X_WINS)
     });
 
+    it('player X should be the winner after placing 3 tokens on the other diagonal', () => {
+        /**
+         * . O X
+         * O X .
+         * X . .
+         */
+        const outcome = play([
+            { player: Player.X(), x: 0, y: 2 },
+            { player: Player.O(), x: 0, y: 1 },
+            { player: Player.X(), x: 1, y: 1 },
+            { player: Player.O(), x: 1, y: 0 },
+            { player: Player.X(), x: 2, y: 0 }, // X WON
+        ])
+
+        expect(outcome).toStrictEqual(TictacToeState.X_WINS)
+    });
+
     function play(moves: Array<TestMove>): TictacToeState {
         let output: TictacToeState = TictacToeState.X_PLAYS;
         for (const {player, x, y} of moves) {
