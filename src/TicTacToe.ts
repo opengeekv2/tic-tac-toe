@@ -6,9 +6,13 @@ export enum TictacToeState {
   X_WINS,
   TIE
 }
-export interface Position {
-    x: number;
-    y: number;
+export abstract class Position {
+    row: number;
+    column: number;
+}
+
+function equalPosition(aPosition: Position, other: Position): boolean {
+    return aPosition.row === other.row && aPosition.column === other.column;
 }
 
 export interface Move {
@@ -60,13 +64,13 @@ export class GameOverError extends Error {
     }
 }
 
-export default class TictacToe {
+export default class TicTacToe {
     playerTurn: Player = Player.X();
     moves: Array<Move> = [];
 
     private hasBeenPlayed(position: Position): boolean {
         return Boolean(this.moves.find( move  => {
-            return (move.position.x === position.x && move.position.y === position.y);
+            return (equalPosition(move.position, position));
         }));
     }
 
@@ -82,39 +86,37 @@ export default class TictacToe {
         const BOARD_SIZE = 3;
         for (let i = 0; i < BOARD_SIZE; i++) {
             let won = Boolean(this.moves.filter(move => {
-                return move.position.y === i && move.player.equals(player)
+                return move.position.column === i && move.player.equals(player)
             }).length === BOARD_SIZE)
             if (won) {
                 return true;
             }
             won = Boolean(this.moves.filter(move => {
-                return move.position.x === i && move.player.equals(player)
+                return move.position.row === i && move.player.equals(player)
             }).length === BOARD_SIZE)
             if (won) {
                 return true;
             }
         }
-        const diagonalLeftToRight: Position[] = [{x: 0, y: 0}, {x: 1, y: 1}, {x: 2, y: 2}];
+        const diagonalLeftToRight: Array<Position> = [{row: 0, column: 0}, {row: 1, column: 1}, {row: 2, column: 2}];
         let won = Boolean(diagonalLeftToRight.every(position => {
             return this.moves.some((move) => {
-                return position.x == move.position.x && position.y == move.position.y && move.player.equals(player);
+                return equalPosition(position, move.position) && move.player.equals(player);
             });
         }));
 
         if (won) {
             return true;
         }
-        const diagonalRightToLeft: Position[] = [{x: 0, y: 2}, {x: 1, y: 1}, {x: 2, y: 0}];
+        const diagonalRightToLeft: Position[] = [{row: 0, column: 2}, {row: 1, column: 1}, {row: 2, column: 0}];
         won = Boolean(diagonalRightToLeft.every(position => {
             return this.moves.some((move) => {
-                return position.x == move.position.x && position.y == move.position.y && move.player.equals(player);
+                return equalPosition(position, move.position) && move.player.equals(player);
             });
         }));
 
-        if (won) {
-            return true;
-        }
-        return false;
+        return won;
+
     }
 
     private xHasWon() {

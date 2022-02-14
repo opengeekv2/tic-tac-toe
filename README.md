@@ -23,3 +23,4 @@
 - [ ] Check for redundant test cases
 - [ ] Check columns, rows and diagonals and O
 - [ ] To test the diagonal tokens
+- [ ] Test the use case of tie

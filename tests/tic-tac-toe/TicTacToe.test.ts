@@ -7,47 +7,47 @@ import TicTacToe, {
 } from "../../src/TicTacToe";
 
 const PLAYER_X_PLAYING_TWICE_IN_A_ROW = [
-            { player: Player.X(), x: 0, y: 0 },
-            { player: Player.X(), x: 1, y: 0 },
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.X(), row: 1, column: 0 },
         ];
 const PLAYER_O_PLAYING_TWICE_IN_A_ROW = [
-            { player: Player.X(), x: 0, y: 0 },
-            { player: Player.O(), x: 1, y: 0 },
-            { player: Player.O(), x: 2, y: 0 },
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 1, column: 0 },
+            { player: Player.O(), row: 2, column: 0 },
         ];
 const PLAYER_O_STARTS_FIRST = [
-            { player: Player.O(), x: 1, y: 0 }
+            { player: Player.O(), row: 1, column: 0 }
         ];
 
 const PLAYER_O_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_X = [
-    { player: Player.X(), x: 0, y: 0 },
-    { player: Player.O(), x: 0, y: 0 },
+    { player: Player.X(), row: 0, column: 0 },
+    { player: Player.O(), row: 0, column: 0 },
 ];
 
 const PLAYER_X_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_O = [
-    { player: Player.X(), x: 0, y: 0 },
-    { player: Player.O(), x: 0, y: 0 },
+    { player: Player.X(), row: 0, column: 0 },
+    { player: Player.O(), row: 0, column: 0 },
 ];
 
 const   PLAYER_X_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_X = [
-    { player: Player.X(), x: 0, y: 0 },
-    { player: Player.O(), x: 1, y: 0 },
-    { player: Player.X(), x: 0, y: 0 },
+    { player: Player.X(), row: 0, column: 0 },
+    { player: Player.O(), row: 1, column: 0 },
+    { player: Player.X(), row: 0, column: 0 },
 ];
 
 const PLAYER_O_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_O = [
-    { player: Player.X(), x: 0, y: 0 },
-    { player: Player.O(), x: 1, y: 0 },
-    { player: Player.X(), x: 2, y: 0 },
-    { player: Player.O(), x: 1, y: 0 },
+    { player: Player.X(), row: 0, column: 0 },
+    { player: Player.O(), row: 1, column: 0 },
+    { player: Player.X(), row: 2, column: 0 },
+    { player: Player.O(), row: 1, column: 0 },
 ];
 
 const NO_MOVES: TestMove[] = [];
 
 interface TestMove {
     player: Player,
-    x: number,
-    y: number;
+    row: number,
+    column: number;
 }
 
 
@@ -61,15 +61,15 @@ describe("Tic Tac Toe", () => {
 
     it("should allow player X to start", () => {
         const output = play([
-            { player: Player.X(), x: 0, y: 0 },
+            { player: Player.X(), row: 0, column: 0 },
         ]);
         expect(output).toBe(TictacToeState.O_PLAYS);
     });
 
     it("should switch player X to O", () => {
         const output = play([
-            { player: Player.X(), x: 0, y: 0 },
-            { player: Player.O(), x: 0, y: 1 },
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 0, column: 1 },
         ]);
         expect(output).toBe(TictacToeState.X_PLAYS);
     });
@@ -104,11 +104,11 @@ describe("Tic Tac Toe", () => {
          * . . .
          */
         const outcome = play([
-            { player: Player.X(), x: 0, y: 0 },
-            { player: Player.O(), x: 1, y: 0 },
-            { player: Player.X(), x: 0, y: 1 },
-            { player: Player.O(), x: 1, y: 1 },
-            { player: Player.X(), x: 0, y: 2 },
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 1, column: 0 },
+            { player: Player.X(), row: 0, column: 1 },
+            { player: Player.O(), row: 1, column: 1 },
+            { player: Player.X(), row: 0, column: 2 },
         ])
 
         expect(outcome).toStrictEqual(TictacToeState.X_WINS)
@@ -132,12 +132,12 @@ describe("Tic Tac Toe", () => {
          * X . .
          */
         const outcome = play([
-            { player: Player.X(), x: 1, y: 0 },
-            { player: Player.O(), x: 0, y: 0 },
-            { player: Player.X(), x: 1, y: 2 },
-            { player: Player.O(), x: 0, y: 1 },
-            { player: Player.X(), x: 2, y: 0 },
-            { player: Player.O(), x: 0, y: 2 },
+            { player: Player.X(), row: 1, column: 0 },
+            { player: Player.O(), row: 0, column: 0 },
+            { player: Player.X(), row: 1, column: 2 },
+            { player: Player.O(), row: 0, column: 1 },
+            { player: Player.X(), row: 2, column: 0 },
+            { player: Player.O(), row: 0, column: 2 },
         ])
 
         expect(outcome).toStrictEqual(TictacToeState.O_WINS)
@@ -150,11 +150,11 @@ describe("Tic Tac Toe", () => {
          * X . .
          */
         const outcome = play([
-            { player: Player.X(), x: 0, y: 0 },
-            { player: Player.O(), x: 0, y: 1 },
-            { player: Player.X(), x: 1, y: 0 },
-            { player: Player.O(), x: 0, y: 2 },
-            { player: Player.X(), x: 2, y: 0 },
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 0, column: 1 },
+            { player: Player.X(), row: 1, column: 0 },
+            { player: Player.O(), row: 0, column: 2 },
+            { player: Player.X(), row: 2, column: 0 },
         ])
 
         expect(outcome).toStrictEqual(TictacToeState.X_WINS)
@@ -167,16 +167,16 @@ describe("Tic Tac Toe", () => {
          * X . .
          */
         const outcome = play([
-            { player: Player.X(), x: 0, y: 0 },
-            { player: Player.O(), x: 0, y: 1 },
-            { player: Player.X(), x: 1, y: 0 },
-            { player: Player.O(), x: 0, y: 2 },
-            { player: Player.X(), x: 2, y: 0 }, // X WON
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 0, column: 1 },
+            { player: Player.X(), row: 1, column: 0 },
+            { player: Player.O(), row: 0, column: 2 },
+            { player: Player.X(), row: 2, column: 0 }, // X WON
         ])
 
         expect(() => {
             play([
-                { player: Player.O(), x: 1, y: 1 },
+                { player: Player.O(), row: 1, column: 1 },
             ])
         }).toThrowError(GameOverError);
 
@@ -190,16 +190,16 @@ describe("Tic Tac Toe", () => {
          * . X .
          */
         const outcome = play([
-            { player: Player.X(), x: 0, y: 1 },
-            { player: Player.O(), x: 0, y: 0 },
-            { player: Player.X(), x: 1, y: 1 },
-            { player: Player.O(), x: 0, y: 2 },
-            { player: Player.X(), x: 2, y: 1 }, // X WON
+            { player: Player.X(), row: 0, column: 1 },
+            { player: Player.O(), row: 0, column: 0 },
+            { player: Player.X(), row: 1, column: 1 },
+            { player: Player.O(), row: 0, column: 2 },
+            { player: Player.X(), row: 2, column: 1 }, // X WON
         ])
 
         expect(() => {
             play([
-                { player: Player.O(), x: 1, y: 2 },
+                { player: Player.O(), row: 1, column: 2 },
             ])
         }).toThrowError(GameOverError);
 
@@ -213,16 +213,16 @@ describe("Tic Tac Toe", () => {
          * . . X
          */
         const outcome = play([
-            { player: Player.X(), x: 0, y: 2 },
-            { player: Player.O(), x: 0, y: 0 },
-            { player: Player.X(), x: 1, y: 2 },
-            { player: Player.O(), x: 0, y: 1 },
-            { player: Player.X(), x: 2, y: 2 }, // X WON
+            { player: Player.X(), row: 0, column: 2 },
+            { player: Player.O(), row: 0, column: 0 },
+            { player: Player.X(), row: 1, column: 2 },
+            { player: Player.O(), row: 0, column: 1 },
+            { player: Player.X(), row: 2, column: 2 }, // X WON
         ])
 
         expect(() => {
             play([
-                { player: Player.O(), x: 1, y: 0 },
+                { player: Player.O(), row: 1, column: 0 },
             ])
         }).toThrowError(GameOverError);
 
@@ -236,11 +236,11 @@ describe("Tic Tac Toe", () => {
          * . . X
          */
         const outcome = play([
-            { player: Player.X(), x: 0, y: 0 },
-            { player: Player.O(), x: 0, y: 1 },
-            { player: Player.X(), x: 1, y: 1 },
-            { player: Player.O(), x: 1, y: 0 },
-            { player: Player.X(), x: 2, y: 2 }, // X WON
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 0, column: 1 },
+            { player: Player.X(), row: 1, column: 1 },
+            { player: Player.O(), row: 1, column: 0 },
+            { player: Player.X(), row: 2, column: 2 }, // X WON
         ])
 
         expect(outcome).toStrictEqual(TictacToeState.X_WINS)
@@ -253,11 +253,11 @@ describe("Tic Tac Toe", () => {
          * X . .
          */
         const outcome = play([
-            { player: Player.X(), x: 0, y: 2 },
-            { player: Player.O(), x: 0, y: 1 },
-            { player: Player.X(), x: 1, y: 1 },
-            { player: Player.O(), x: 1, y: 0 },
-            { player: Player.X(), x: 2, y: 0 }, // X WON
+            { player: Player.X(), row: 0, column: 2 },
+            { player: Player.O(), row: 0, column: 1 },
+            { player: Player.X(), row: 1, column: 1 },
+            { player: Player.O(), row: 1, column: 0 },
+            { player: Player.X(), row: 2, column: 0 }, // X WON
         ])
 
         expect(outcome).toStrictEqual(TictacToeState.X_WINS)
@@ -265,8 +265,8 @@ describe("Tic Tac Toe", () => {
 
     function play(moves: Array<TestMove>): TictacToeState {
         let output: TictacToeState = TictacToeState.X_PLAYS;
-        for (const {player, x, y} of moves) {
-            output = ticTacToe.play({ x, y }, player);
+        for (const {player, row, column} of moves) {
+            output = ticTacToe.play({ row: row, column: column }, player);
         }
 
         return output;
