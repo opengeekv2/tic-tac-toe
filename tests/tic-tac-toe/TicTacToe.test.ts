@@ -284,6 +284,27 @@ describe("Tic Tac Toe", () => {
         expect(outcome).toStrictEqual(TictacToeState.TIE)
     });
 
+    it('The game should be a tie when all the board is full', () => {
+        /**
+         * X X O
+         * O X O
+         * X O X
+         */
+        const outcome = play([
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 1, column: 0 },
+            { player: Player.X(), row: 1, column: 1 },
+            { player: Player.O(), row: 0, column: 1 },
+            { player: Player.X(), row: 1, column: 2 },
+            { player: Player.O(), row: 2, column: 1 },
+            { player: Player.X(), row: 2, column: 0 },
+            { player: Player.O(), row: 0, column: 2 },
+            { player: Player.X(), row: 2, column: 2 },
+        ])
+
+        expect(outcome).toStrictEqual(TictacToeState.X_WINS)
+    });
+
 
     function play(moves: Array<TestMove>): TictacToeState {
         let output: TictacToeState = TictacToeState.X_PLAYS;

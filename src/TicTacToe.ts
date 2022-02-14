@@ -65,8 +65,9 @@ export class GameOverError extends Error {
 }
 
 export default class TicTacToe {
-    playerTurn: Player = Player.X();
-    moves: Array<Move> = [];
+    private readonly BOARD_SIZE: number = 3;
+    private playerTurn: Player = Player.X();
+    private moves: Array<Move> = [];
 
     private hasBeenPlayed(position: Position): boolean {
         return Boolean(this.moves.find( move  => {
@@ -83,17 +84,16 @@ export default class TicTacToe {
     }
 
     private playerHasWon(player: Player): boolean {
-        const BOARD_SIZE = 3;
-        for (let i = 0; i < BOARD_SIZE; i++) {
+        for (let i = 0; i < this.BOARD_SIZE; i++) {
             let won = Boolean(this.moves.filter(move => {
                 return move.position.column === i && move.player.equals(player)
-            }).length === BOARD_SIZE)
+            }).length === this.BOARD_SIZE)
             if (won) {
                 return true;
             }
             won = Boolean(this.moves.filter(move => {
                 return move.position.row === i && move.player.equals(player)
-            }).length === BOARD_SIZE)
+            }).length === this.BOARD_SIZE)
             if (won) {
                 return true;
             }
@@ -148,23 +148,19 @@ export default class TicTacToe {
 
         this.switchToNextPlayer();
 
-        const winner = this.getWinner();
-        if ( null !== winner) {
-            return winner;
-        } else {
-            return Player.O().equals(this.playerTurn) ? TictacToeState.O_PLAYS : TictacToeState.X_PLAYS;
-        }
-
+        return this.getGameState();
     }
 
-    // TODO: to deprecate
-    private getWinner(): TictacToeState | null {
+    private getGameState(): TictacToeState {
         if (true === this.xHasWon()) {
             return TictacToeState.X_WINS;
         }
         if (true === this.oHasWon()) {
             return TictacToeState.O_WINS;
         }
-        return null;
+        if (this.moves.length >= (this.BOARD_SIZE**2)) {
+            return TictacToeState.TIE;
+        }
+        return Player.O().equals(this.playerTurn) ? TictacToeState.O_PLAYS : TictacToeState.X_PLAYS;
     }
 }
