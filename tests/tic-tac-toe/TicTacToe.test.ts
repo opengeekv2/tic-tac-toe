@@ -134,7 +134,7 @@ describe("Tic Tac Toe", () => {
             { player: Player.O(), x: 0, y: 2 },
         ])
 
-        expect(ticTacToe.getWinner()).toStrictEqual(Player.O())
+        expect(ticTacToe.getWinner()).toStrictEqual(TictacToeState.O_WINS)
     });
 
     it('should grant victory to player X when she puts 3 tokens on the same column', () => {
@@ -151,7 +151,7 @@ describe("Tic Tac Toe", () => {
             { player: Player.X(), x: 2, y: 0 },
         ])
 
-        expect(ticTacToe.getWinner()).toStrictEqual(Player.X())
+        expect(ticTacToe.getWinner()).toStrictEqual(TictacToeState.X_WINS)
     });
 
     it('should prevent the player from playing after a player has won', () => {
@@ -174,7 +174,7 @@ describe("Tic Tac Toe", () => {
             ])
         }).toThrowError(GameOverError);
 
-        expect(ticTacToe.getWinner()).toStrictEqual(Player.X())
+        expect(ticTacToe.getWinner()).toStrictEqual(TictacToeState.X_WINS)
     });
 
     it('should prevent the player from playing after a player has won', () => {
@@ -197,7 +197,7 @@ describe("Tic Tac Toe", () => {
             ])
         }).toThrowError(GameOverError);
 
-        expect(ticTacToe.getWinner()).toStrictEqual(Player.X())
+        expect(ticTacToe.getWinner()).toStrictEqual(TictacToeState.X_WINS)
     });
 
     it('should prevent the player from playing after a player has won', () => {
@@ -220,7 +220,7 @@ describe("Tic Tac Toe", () => {
             ])
         }).toThrowError(GameOverError);
 
-        expect(ticTacToe.getWinner()).toStrictEqual(Player.X())
+        expect(ticTacToe.getWinner()).toStrictEqual(TictacToeState.X_WINS)
     });
 
     function play(moves: Array<TestMove>): TictacToeState | boolean {

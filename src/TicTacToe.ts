@@ -79,14 +79,35 @@ export default class TictacToe {
         this.playerTurn = Player.O();
     }
 
-    throwExceptionWhenXHasWon(): void {
+    playerHasWon(player: Player): boolean {
         for (let i = 0; i < 3; i++) {
-            const won = Boolean(this.moves.filter(move => {
-                return move.position.y === i && move.player.equals(Player.X())
+            let won = Boolean(this.moves.filter(move => {
+                return move.position.y === i && move.player.equals(player)
             }).length === 3)
             if (won) {
-                throw new GameOverError("Player X won");
+                return true;
             }
+            won = Boolean(this.moves.filter(move => {
+                return move.position.x === i && move.player.equals(player)
+            }).length === 3)
+            if (won) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    xHasWon() {
+        return this.playerHasWon(Player.X());
+    }
+
+    oHasWon() {
+        return this.playerHasWon(Player.O());
+    }
+
+    throwExceptionWhenXHasWon(): void {
+        if (this.xHasWon()) {
+            throw new GameOverError("Player X won");
         }
     }
 
@@ -109,10 +130,13 @@ export default class TictacToe {
     }
 
     // TODO: to deprecate
-    getWinner(): Player {
-        if (this.moves.length === 0)
-            return null;
-
-        return this.moves[this.moves.length-1].player;
+    getWinner(): TictacToeState | void {
+        if (true === this.xHasWon()) {
+            return TictacToeState.X_WINS;
+        }
+        if (true === this.oHasWon()) {
+            return TictacToeState.O_WINS;
+        }
+        return null;
     }
 }
