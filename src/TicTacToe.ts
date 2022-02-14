@@ -94,12 +94,23 @@ export default class TictacToe {
                 return true;
             }
         }
-        const diagonal: Position[] = [{x: 0, y: 0}, {x: 1, y: 1}, {x: 2, y: 2}];
-        const won = Boolean(diagonal.every(position => {
+        const diagonalLeftToRight: Position[] = [{x: 0, y: 0}, {x: 1, y: 1}, {x: 2, y: 2}];
+        let won = Boolean(diagonalLeftToRight.every(position => {
             return this.moves.some((move) => {
                 return position.x == move.position.x && position.y == move.position.y && move.player.equals(player);
             });
         }));
+
+        if (won) {
+            return true;
+        }
+        const diagonalRightToLeft: Position[] = [{x: 0, y: 2}, {x: 1, y: 1}, {x: 2, y: 0}];
+        won = Boolean(diagonalRightToLeft.every(position => {
+            return this.moves.some((move) => {
+                return position.x == move.position.x && position.y == move.position.y && move.player.equals(player);
+            });
+        }));
+
         if (won) {
             return true;
         }
