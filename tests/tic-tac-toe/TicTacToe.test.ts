@@ -6,44 +6,6 @@ import TicTacToe, {
     TictacToeState
 } from "../../src/TicTacToe";
 
-const PLAYER_X_PLAYING_TWICE_IN_A_ROW = [
-            { player: Player.X(), row: 0, column: 0 },
-            { player: Player.X(), row: 1, column: 0 },
-        ];
-const PLAYER_O_PLAYING_TWICE_IN_A_ROW = [
-            { player: Player.X(), row: 0, column: 0 },
-            { player: Player.O(), row: 1, column: 0 },
-            { player: Player.O(), row: 2, column: 0 },
-        ];
-const PLAYER_O_STARTS_FIRST = [
-            { player: Player.O(), row: 1, column: 0 }
-        ];
-
-const PLAYER_O_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_X = [
-    { player: Player.X(), row: 0, column: 0 },
-    { player: Player.O(), row: 0, column: 0 },
-];
-
-const PLAYER_X_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_O = [
-    { player: Player.X(), row: 0, column: 0 },
-    { player: Player.O(), row: 0, column: 0 },
-];
-
-const   PLAYER_X_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_X = [
-    { player: Player.X(), row: 0, column: 0 },
-    { player: Player.O(), row: 1, column: 0 },
-    { player: Player.X(), row: 0, column: 0 },
-];
-
-const PLAYER_O_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_O = [
-    { player: Player.X(), row: 0, column: 0 },
-    { player: Player.O(), row: 1, column: 0 },
-    { player: Player.X(), row: 2, column: 0 },
-    { player: Player.O(), row: 1, column: 0 },
-];
-
-const NO_MOVES: TestMove[] = [];
-
 interface TestMove {
     player: Player,
     row: number,
@@ -59,7 +21,44 @@ describe("Tic Tac Toe", () => {
         ticTacToe = new TicTacToe();
     });
 
+    function play(moves: TestMove[]): TictacToeState {
+        let output: TictacToeState = TictacToeState.X_PLAYS;
+        for (const {player, row, column} of moves) {
+            output = ticTacToe.play({ row: row, column: column }, player);
+        }
+
+        return output;
+    }
+
     describe(" managing player turns ", () => {
+
+        const NO_MOVES: TestMove[] = [];
+
+        const PLAYER_X_PLAYING_TWICE_IN_A_ROW = [
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.X(), row: 1, column: 0 },
+        ];
+
+        const PLAYER_O_PLAYING_TWICE_IN_A_ROW = [
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 1, column: 0 },
+            { player: Player.O(), row: 2, column: 0 },
+        ];
+
+        const PLAYER_O_STARTS_FIRST = [
+            { player: Player.O(), row: 1, column: 0 }
+        ];
+
+        it('should not grant victory to pristine game', () => {
+            /**
+             * . . .
+             * . . .
+             * . . .
+             */
+            const outcome = play(NO_MOVES)
+
+            expect(outcome).toBe(TictacToeState.X_PLAYS)
+        });
 
         it("should allow player X to start", () => {
             const output = play([
@@ -80,7 +79,7 @@ describe("Tic Tac Toe", () => {
         [ PLAYER_X_PLAYING_TWICE_IN_A_ROW ],
         [ PLAYER_O_PLAYING_TWICE_IN_A_ROW ],
         [ PLAYER_O_STARTS_FIRST ]
-        ])('should prevent the wrong player of playing out of turn', (moves: Array<TestMove>) => {
+        ])('should prevent the wrong player of playing out of turn', (moves: TestMove[]) => {
             expect(() => {
                 play(moves)
             }).toThrowError(OutOfTurnError);
@@ -91,12 +90,35 @@ describe("Tic Tac Toe", () => {
 
     describe(" checking positions ", () => {
 
+        const PLAYER_O_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_X = [
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 0, column: 0 },
+        ];
+
+        const PLAYER_X_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_O = [
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 0, column: 0 },
+        ];
+
+        const   PLAYER_X_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_X = [
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 1, column: 0 },
+            { player: Player.X(), row: 0, column: 0 },
+        ];
+
+        const PLAYER_O_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_O = [
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 1, column: 0 },
+            { player: Player.X(), row: 2, column: 0 },
+            { player: Player.O(), row: 1, column: 0 },
+        ];
+
         it.each([
             [ PLAYER_O_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_X ],
             [ PLAYER_X_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_O ],
             [ PLAYER_X_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_X ],
             [ PLAYER_O_TRIES_TO_PLAY_ON_SAME_POSITION_THAN_O ],
-        ])('prevents players to play on an already taken position', (moves: Array<TestMove>) => {
+        ])('prevents players to play on an already taken position', (moves: TestMove[]) => {
             expect(() => {
                 play(moves)
             }).toThrowError(SameMoveTwiceError);
@@ -107,170 +129,162 @@ describe("Tic Tac Toe", () => {
 
     describe(" checking game end conditions ", () => {
 
-        it('should grant victory to player X when he puts 3 tokens on the same row', () => {
-            /**
-             * X X X
-             * O O .
-             * . . .
-             */
-            const outcome = play([
-                { player: Player.X(), row: 0, column: 0 },
-                { player: Player.O(), row: 1, column: 0 },
-                { player: Player.X(), row: 0, column: 1 },
-                { player: Player.O(), row: 1, column: 1 },
-                { player: Player.X(), row: 0, column: 2 },
-            ])
+        const X_WINS_FIRST_ROW = [
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 1, column: 0 },
+            { player: Player.X(), row: 0, column: 1 },
+            { player: Player.O(), row: 1, column: 1 },
+            { player: Player.X(), row: 0, column: 2 },
+        ];
+
+        const X_WINS_SECOND_ROW = [
+            { player: Player.X(), row: 1, column: 0 },
+            { player: Player.O(), row: 0, column: 0 },
+            { player: Player.X(), row: 1, column: 1 },
+            { player: Player.O(), row: 0, column: 1 },
+            { player: Player.X(), row: 1, column: 2 },
+        ];
+
+        const X_WINS_FIRST_COLUMN = [
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 0, column: 1 },
+            { player: Player.X(), row: 1, column: 0 },
+            { player: Player.O(), row: 0, column: 2 },
+            { player: Player.X(), row: 2, column: 0 },
+        ];
+
+        const X_WINS_SECOND_COLUMN = [
+            { player: Player.X(), row: 0, column: 1 },
+            { player: Player.O(), row: 0, column: 0 },
+            { player: Player.X(), row: 1, column: 1 },
+            { player: Player.O(), row: 0, column: 2 },
+            { player: Player.X(), row: 2, column: 1 },
+        ];
+
+        const X_WINS_LEFT_DIAGONAL = [
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 0, column: 1 },
+            { player: Player.X(), row: 1, column: 1 },
+            { player: Player.O(), row: 1, column: 0 },
+            { player: Player.X(), row: 2, column: 2 }, // X WON
+        ]
+
+        const X_WINS_RIGHT_DIAGONAL = [
+            { player: Player.X(), row: 0, column: 2 },
+            { player: Player.O(), row: 0, column: 1 },
+            { player: Player.X(), row: 1, column: 1 },
+            { player: Player.O(), row: 1, column: 0 },
+            { player: Player.X(), row: 2, column: 0 }, // X WON
+        ]
+
+        const X_WINS_AT_LAST_MOVE = [
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 1, column: 0 },
+            { player: Player.X(), row: 1, column: 1 },
+            { player: Player.O(), row: 0, column: 1 },
+            { player: Player.X(), row: 1, column: 2 },
+            { player: Player.O(), row: 2, column: 1 },
+            { player: Player.X(), row: 2, column: 0 },
+            { player: Player.O(), row: 0, column: 2 },
+            { player: Player.X(), row: 2, column: 2 },
+        ]
+
+        it.each([
+            [ X_WINS_FIRST_ROW ],
+            [ X_WINS_SECOND_ROW ],
+            [ X_WINS_FIRST_COLUMN ],
+            [ X_WINS_SECOND_COLUMN ],
+            [ X_WINS_LEFT_DIAGONAL ],
+            [ X_WINS_RIGHT_DIAGONAL ],
+            [ X_WINS_AT_LAST_MOVE ]
+        ])('should grant victory to player X', (moves: TestMove[]) => {
+            const outcome = play(moves)
 
             expect(outcome).toStrictEqual(TictacToeState.X_WINS)
         });
 
-        it('should not grant victory to pristine game', () => {
-            /**
-             * . . .
-             * . . .
-             * . . .
-             */
-            const outcome = play(NO_MOVES)
+        const O_WINS_FIRST_ROW = [
+            { player: Player.X(), row: 2, column: 2 },
+            { player: Player.O(), row: 0, column: 0 },
+            { player: Player.X(), row: 1, column: 0 },
+            { player: Player.O(), row: 0, column: 1 },
+            { player: Player.X(), row: 1, column: 1 },
+            { player: Player.O(), row: 0, column: 2 },
+        ];
 
-            expect(outcome).toBe(TictacToeState.X_PLAYS)
-        });
+        const O_WINS_SECOND_ROW = [
+            { player: Player.X(), row: 2, column: 2 },
+            { player: Player.O(), row: 1, column: 0 },
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 1, column: 1 },
+            { player: Player.X(), row: 0, column: 1 },
+            { player: Player.O(), row: 1, column: 2 },
+        ];
 
-        it('should grant victory to player O when she puts 3 tokens on the same row', () => {
-            /**
-             * O O O
-             * X X .
-             * X . .
-             */
-            const outcome = play([
-                { player: Player.X(), row: 1, column: 0 },
-                { player: Player.O(), row: 0, column: 0 },
-                { player: Player.X(), row: 1, column: 2 },
-                { player: Player.O(), row: 0, column: 1 },
-                { player: Player.X(), row: 2, column: 0 },
-                { player: Player.O(), row: 0, column: 2 },
-            ])
+        const O_WINS_FIRST_COLUMN = [
+            { player: Player.X(), row: 2, column: 2 },
+            { player: Player.O(), row: 0, column: 0 },
+            { player: Player.X(), row: 0, column: 1 },
+            { player: Player.O(), row: 1, column: 0 },
+            { player: Player.X(), row: 0, column: 2 },
+            { player: Player.O(), row: 2, column: 0 },
+        ];
+
+        const O_WINS_SECOND_COLUMN = [
+            { player: Player.X(), row: 2, column: 2 },
+            { player: Player.O(), row: 0, column: 1 },
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 1, column: 1 },
+            { player: Player.X(), row: 0, column: 2 },
+            { player: Player.O(), row: 2, column: 1 },
+        ];
+
+        const O_WINS_LEFT_DIAGONAL = [
+            { player: Player.X(), row: 0, column: 2 },
+            { player: Player.O(), row: 0, column: 0 },
+            { player: Player.X(), row: 0, column: 1 },
+            { player: Player.O(), row: 1, column: 1 },
+            { player: Player.X(), row: 1, column: 0 },
+            { player: Player.O(), row: 2, column: 2 },
+        ]
+
+        const O_WINS_RIGHT_DIAGONAL = [
+            { player: Player.X(), row: 2, column: 2 },
+            { player: Player.O(), row: 0, column: 2 },
+            { player: Player.X(), row: 0, column: 1 },
+            { player: Player.O(), row: 1, column: 1 },
+            { player: Player.X(), row: 1, column: 0 },
+            { player: Player.O(), row: 2, column: 0 },
+        ]
+
+        it.each([
+            [ O_WINS_FIRST_ROW ],
+            [ O_WINS_SECOND_ROW ],
+            [ O_WINS_FIRST_COLUMN ],
+            [ O_WINS_SECOND_COLUMN ],
+            [ O_WINS_LEFT_DIAGONAL ],
+            [ O_WINS_RIGHT_DIAGONAL ],
+        ])('should grant victory to player O', (moves: TestMove[]) => {
+            const outcome = play(moves)
 
             expect(outcome).toStrictEqual(TictacToeState.O_WINS)
         });
 
-        it('should grant victory to player X when she puts 3 tokens on the same column', () => {
-            /**
-             * X O O
-             * X . .
-             * X . .
-             */
-            const outcome = play([
-                { player: Player.X(), row: 0, column: 0 },
-                { player: Player.O(), row: 0, column: 1 },
-                { player: Player.X(), row: 1, column: 0 },
-                { player: Player.O(), row: 0, column: 2 },
-                { player: Player.X(), row: 2, column: 0 },
-            ])
+        const O_PLAYS_AFTER_X_WON = [
+            { player: Player.X(), row: 0, column: 0 },
+            { player: Player.O(), row: 0, column: 1 },
+            { player: Player.X(), row: 1, column: 0 },
+            { player: Player.O(), row: 0, column: 2 },
+            { player: Player.X(), row: 2, column: 0 }, // X WON
+            { player: Player.O(), row: 1, column: 1 }
+        ];
 
-            expect(outcome).toStrictEqual(TictacToeState.X_WINS)
-        });
-
-        it('should prevent the player from playing after a player has won', () => {
-            /**
-             * X O O
-             * X O .
-             * X . .
-             */
-            const outcome = play([
-                { player: Player.X(), row: 0, column: 0 },
-                { player: Player.O(), row: 0, column: 1 },
-                { player: Player.X(), row: 1, column: 0 },
-                { player: Player.O(), row: 0, column: 2 },
-                { player: Player.X(), row: 2, column: 0 }, // X WON
-            ])
-
+        it.each([
+            [ O_PLAYS_AFTER_X_WON ]
+        ])("should prevent any player from playing after any player has won", (moves: TestMove[]) => {
             expect(() => {
-                play([
-                    { player: Player.O(), row: 1, column: 1 },
-                ])
+                play(moves);
             }).toThrowError(GameOverError);
-
-            expect(outcome).toStrictEqual(TictacToeState.X_WINS)
-        });
-
-        it('should prevent the player from playing after a player has won', () => {
-            /**
-             * O X O
-             * O X .
-             * . X .
-             */
-            const outcome = play([
-                { player: Player.X(), row: 0, column: 1 },
-                { player: Player.O(), row: 0, column: 0 },
-                { player: Player.X(), row: 1, column: 1 },
-                { player: Player.O(), row: 0, column: 2 },
-                { player: Player.X(), row: 2, column: 1 }, // X WON
-            ])
-
-            expect(() => {
-                play([
-                    { player: Player.O(), row: 1, column: 2 },
-                ])
-            }).toThrowError(GameOverError);
-
-            expect(outcome).toStrictEqual(TictacToeState.X_WINS)
-        });
-
-        it('should prevent the player from playing after a player has won', () => {
-            /**
-             * O O X
-             * O . X
-             * . . X
-             */
-            const outcome = play([
-                { player: Player.X(), row: 0, column: 2 },
-                { player: Player.O(), row: 0, column: 0 },
-                { player: Player.X(), row: 1, column: 2 },
-                { player: Player.O(), row: 0, column: 1 },
-                { player: Player.X(), row: 2, column: 2 }, // X WON
-            ])
-
-            expect(() => {
-                play([
-                    { player: Player.O(), row: 1, column: 0 },
-                ])
-            }).toThrowError(GameOverError);
-
-            expect(outcome).toStrictEqual(TictacToeState.X_WINS)
-        });
-
-        it('player X should be the winner after placing 3 tokens on a diagonal', () => {
-            /**
-             * X O .
-             * O X .
-             * . . X
-             */
-            const outcome = play([
-                { player: Player.X(), row: 0, column: 0 },
-                { player: Player.O(), row: 0, column: 1 },
-                { player: Player.X(), row: 1, column: 1 },
-                { player: Player.O(), row: 1, column: 0 },
-                { player: Player.X(), row: 2, column: 2 }, // X WON
-            ])
-
-            expect(outcome).toStrictEqual(TictacToeState.X_WINS)
-        });
-
-        it('player X should be the winner after placing 3 tokens on the other diagonal', () => {
-            /**
-             * . O X
-             * O X .
-             * X . .
-             */
-            const outcome = play([
-                { player: Player.X(), row: 0, column: 2 },
-                { player: Player.O(), row: 0, column: 1 },
-                { player: Player.X(), row: 1, column: 1 },
-                { player: Player.O(), row: 1, column: 0 },
-                { player: Player.X(), row: 2, column: 0 }, // X WON
-            ])
-
-            expect(outcome).toStrictEqual(TictacToeState.X_WINS)
         });
 
         it('The game should be a tie when all the board is full', () => {
@@ -294,36 +308,6 @@ describe("Tic Tac Toe", () => {
             expect(outcome).toStrictEqual(TictacToeState.TIE)
         });
 
-        it('The game should be a tie when all the board is full', () => {
-            /**
-             * X X O
-             * O X O
-             * X O X
-             */
-            const outcome = play([
-                { player: Player.X(), row: 0, column: 0 },
-                { player: Player.O(), row: 1, column: 0 },
-                { player: Player.X(), row: 1, column: 1 },
-                { player: Player.O(), row: 0, column: 1 },
-                { player: Player.X(), row: 1, column: 2 },
-                { player: Player.O(), row: 2, column: 1 },
-                { player: Player.X(), row: 2, column: 0 },
-                { player: Player.O(), row: 0, column: 2 },
-                { player: Player.X(), row: 2, column: 2 },
-            ])
-
-            expect(outcome).toStrictEqual(TictacToeState.X_WINS)
-        });
-
     });
 
-
-    function play(moves: Array<TestMove>): TictacToeState {
-        let output: TictacToeState = TictacToeState.X_PLAYS;
-        for (const {player, row, column} of moves) {
-            output = ticTacToe.play({ row: row, column: column }, player);
-        }
-
-        return output;
-    }
 });

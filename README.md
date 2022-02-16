@@ -17,10 +17,11 @@
 - [X] Parametrizar jugadas
 - [X] Añadir editorconfig al repo
 - [X] Check rows and diagonals for X
-- [ ] Group tests for wining conditions with it.each()
-- [ ] Improve describes
+- [X] Group tests for wining conditions with it.each()
+- [X] Improve describes
 - [X] Improve testing interface
 - [ ] Check for redundant test cases
-- [ ] Check columns, rows and diagonals and O
 - [X] To test the diagonal tokens
 - [X] Test the use case of tie
+- [X] MOVE CONSTANTS INTO THEIR TESTS SUITES
+- [ ] Player has won is ugly
