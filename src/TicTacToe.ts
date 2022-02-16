@@ -77,18 +77,20 @@ export default class TicTacToe {
         this.playerTurn = Player.O();
     }
 
+    private linearCheck(player: Player, index: number, getDimension: CallableFunction) {
+        return Boolean(this.moves.filter(move => {
+            return getDimension(move) === index && move.player.equals(player)
+        }).length === this.BOARD_SIZE)
+    }
+
+    private checkRowAndColumn(player: Player, index: number) {
+        return this.linearCheck(player, index, (move: Move) => move.position.column) ||
+            this.linearCheck(player, index, (move: Move) => move.position.row)
+    }
+
     private playerHasWon(player: Player): boolean {
         for (let i = 0; i < this.BOARD_SIZE; i++) {
-            let won = Boolean(this.moves.filter(move => {
-                return move.position.column === i && move.player.equals(player)
-            }).length === this.BOARD_SIZE)
-            if (won) {
-                return true;
-            }
-            won = Boolean(this.moves.filter(move => {
-                return move.position.row === i && move.player.equals(player)
-            }).length === this.BOARD_SIZE)
-            if (won) {
+            if (this.checkRowAndColumn(player, i)) {
                 return true;
             }
         }
