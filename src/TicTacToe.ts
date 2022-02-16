@@ -52,12 +52,6 @@ export class SameMoveTwiceError extends Error {
     }
 }
 
-export class UnknownPlayerError extends Error {
-    constructor(message?: string) {
-        super(`UnknownPlayerError: ${message}`);
-    }
-}
-
 export class GameOverError extends Error {
     constructor(message?: string) {
         super(`GameOverError: ${message}`);
