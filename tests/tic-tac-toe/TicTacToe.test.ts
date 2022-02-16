@@ -319,7 +319,6 @@ describe("Tic Tac Toe", () => {
                     { player: Player.X(), row: 1, column: 2 }, // TIE
                     { player: Player.O(), row: 4, column: 4 },
                 ])
-                console.log(output);
             }).toThrowError(GameOverError);
         });
 
