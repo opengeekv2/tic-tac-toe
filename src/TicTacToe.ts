@@ -156,8 +156,12 @@ export default class TicTacToe {
         if (true === this.oHasWon()) {
             return TictacToeState.O_WINS;
         }
-        if (this.moves.length >= (this.BOARD_SIZE**2)) {
+        if (this.moves.length === (this.BOARD_SIZE**2)) {
             return TictacToeState.TIE;
+        }
+
+        if (this.moves.length > (this.BOARD_SIZE**2)) {
+            throw new GameOverError("The game is over as a tie");
         }
         return Player.O().equals(this.playerTurn) ? TictacToeState.O_PLAYS : TictacToeState.X_PLAYS;
     }

@@ -109,7 +109,6 @@ describe("Tic Tac Toe", () => {
             expect(() => {
                 play(moves)
             }).toThrowError(SameMoveTwiceError);
-
         });
 
     });
@@ -304,6 +303,24 @@ describe("Tic Tac Toe", () => {
             ])
 
             expect(outcome).toStrictEqual(TictacToeState.TIE)
+        });
+
+        it('The game should be a tie when all the board is full', () => {
+            expect(() => {
+                const output = play([
+                    { player: Player.X(), row: 0, column: 0 },
+                    { player: Player.O(), row: 1, column: 0 },
+                    { player: Player.X(), row: 1, column: 1 },
+                    { player: Player.O(), row: 2, column: 2 },
+                    { player: Player.X(), row: 0, column: 1 },
+                    { player: Player.O(), row: 2, column: 1 },
+                    { player: Player.X(), row: 2, column: 0 },
+                    { player: Player.O(), row: 0, column: 2 },
+                    { player: Player.X(), row: 1, column: 2 }, // TIE
+                    { player: Player.O(), row: 4, column: 4 },
+                ])
+                console.log(output);
+            }).toThrowError(GameOverError);
         });
 
     });
