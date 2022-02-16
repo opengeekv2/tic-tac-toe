@@ -88,31 +88,29 @@ export default class TicTacToe {
             this.linearCheck(player, index, (move: Move) => move.position.row)
     }
 
+    private checkDiagonals(player: Player, diagonals: Position[][]) {
+        return Boolean(diagonals.some((diagonal) => {
+            return diagonal.every(position => {
+                return this.moves.some((move) => {
+                    return equalPosition(position, move.position) && move.player.equals(player);
+                });
+            });
+        }))
+    }
+
     private playerHasWon(player: Player): boolean {
         for (let i = 0; i < this.BOARD_SIZE; i++) {
             if (this.checkRowAndColumn(player, i)) {
                 return true;
             }
         }
-        const diagonalLeftToRight: Array<Position> = [{row: 0, column: 0}, {row: 1, column: 1}, {row: 2, column: 2}];
-        let won = Boolean(diagonalLeftToRight.every(position => {
-            return this.moves.some((move) => {
-                return equalPosition(position, move.position) && move.player.equals(player);
-            });
-        }));
 
-        if (won) {
-            return true;
-        }
-        const diagonalRightToLeft: Position[] = [{row: 0, column: 2}, {row: 1, column: 1}, {row: 2, column: 0}];
-        won = Boolean(diagonalRightToLeft.every(position => {
-            return this.moves.some((move) => {
-                return equalPosition(position, move.position) && move.player.equals(player);
-            });
-        }));
+        const diagonals: Position[][] = [
+            [{row: 0, column: 0}, {row: 1, column: 1}, {row: 2, column: 2}],
+            [{row: 0, column: 2}, {row: 1, column: 1}, {row: 2, column: 0}]
+        ];
 
-        return won;
-
+        return this.checkDiagonals(player, diagonals);
     }
 
     private xHasWon() {

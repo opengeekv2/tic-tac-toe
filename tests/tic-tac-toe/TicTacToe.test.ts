@@ -183,7 +183,7 @@ describe("Tic Tac Toe", () => {
             [ X_WINS_LEFT_DIAGONAL ],
             [ X_WINS_RIGHT_DIAGONAL ],
             [ X_WINS_AT_LAST_MOVE ]
-        ])('should grant victory to player X', (moves: TestMove[]) => {
+        ])('should grant victory to player X - case %#', (moves: TestMove[]) => {
             const outcome = play(moves)
 
             expect(outcome).toStrictEqual(TictacToeState.X_WINS)
@@ -250,7 +250,7 @@ describe("Tic Tac Toe", () => {
             [ O_WINS_SECOND_COLUMN ],
             [ O_WINS_LEFT_DIAGONAL ],
             [ O_WINS_RIGHT_DIAGONAL ],
-        ])('should grant victory to player O', (moves: TestMove[]) => {
+        ])('should grant victory to player O - case %#', (moves: TestMove[]) => {
             const outcome = play(moves)
 
             expect(outcome).toStrictEqual(TictacToeState.O_WINS)

@@ -5,7 +5,7 @@
 - [X] Players cannot play on a played position
 - [X] A player with 3 X’s (vertically, horizontally or diagonally) wins the game.
 - [X] If all 9 squares are filled and neither player achieves 3 in a row, the game is a draw.
-- [ ] A player with 3 O’s in a row (vertically, horizontally or diagonally) wins the game.
+- [X] A player with 3 O’s in a row (vertically, horizontally or diagonally) wins the game.
 
 
 # TODO:
@@ -24,4 +24,4 @@
 - [X] To test the diagonal tokens
 - [X] Test the use case of tie
 - [X] MOVE CONSTANTS INTO THEIR TESTS SUITES
-- [ ] Player has won is ugly
+- [X] Beautify player has won is ugly
