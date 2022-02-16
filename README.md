@@ -20,7 +20,7 @@
 - [X] Group tests for wining conditions with it.each()
 - [X] Improve describes
 - [X] Improve testing interface
-- [ ] Check for redundant test cases
+- [X] Check for redundant test cases
 - [X] To test the diagonal tokens
 - [X] Test the use case of tie
 - [X] MOVE CONSTANTS INTO THEIR TESTS SUITES
