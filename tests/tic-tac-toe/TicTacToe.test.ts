@@ -32,8 +32,6 @@ describe("Tic Tac Toe", () => {
 
     describe(" managing player turns ", () => {
 
-        const NO_MOVES: TestMove[] = [];
-
         const PLAYER_X_PLAYING_TWICE_IN_A_ROW = [
             { player: Player.X(), row: 0, column: 0 },
             { player: Player.X(), row: 1, column: 0 },
@@ -48,17 +46,6 @@ describe("Tic Tac Toe", () => {
         const PLAYER_O_STARTS_FIRST = [
             { player: Player.O(), row: 1, column: 0 }
         ];
-
-        it('should not grant victory to pristine game', () => {
-            /**
-             * . . .
-             * . . .
-             * . . .
-             */
-            const outcome = play(NO_MOVES)
-
-            expect(outcome).toBe(TictacToeState.X_PLAYS)
-        });
 
         it("should allow player X to start", () => {
             const output = play([
@@ -166,7 +153,7 @@ describe("Tic Tac Toe", () => {
             { player: Player.O(), row: 0, column: 1 },
             { player: Player.X(), row: 1, column: 1 },
             { player: Player.O(), row: 1, column: 0 },
-            { player: Player.X(), row: 2, column: 2 }, // X WON
+            { player: Player.X(), row: 2, column: 2 },
         ]
 
         const X_WINS_RIGHT_DIAGONAL = [
@@ -174,7 +161,7 @@ describe("Tic Tac Toe", () => {
             { player: Player.O(), row: 0, column: 1 },
             { player: Player.X(), row: 1, column: 1 },
             { player: Player.O(), row: 1, column: 0 },
-            { player: Player.X(), row: 2, column: 0 }, // X WON
+            { player: Player.X(), row: 2, column: 0 },
         ]
 
         const X_WINS_AT_LAST_MOVE = [
