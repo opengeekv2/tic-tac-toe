@@ -121,7 +121,7 @@ export default class TicTacToe {
         return this.playerHasWon(Player.O());
     }
 
-    private throwExceptionWhenXHasWon(): void {
+    private throwErrorIfPlayingAfterAPlayerHasWon(): void {
         if (this.xHasWon()) {
             throw new GameOverError("Player X won");
         }
@@ -140,7 +140,7 @@ export default class TicTacToe {
             throw new SameMoveTwiceError("A player can't do the same move twice");
         }
 
-        this.throwExceptionWhenXHasWon()
+        this.throwErrorIfPlayingAfterAPlayerHasWon()
 
         this.moves.push({ position, player });
 
