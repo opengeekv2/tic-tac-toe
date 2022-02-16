@@ -307,7 +307,7 @@ describe("Tic Tac Toe", () => {
 
         it('The game should be a tie when all the board is full', () => {
             expect(() => {
-                const output = play([
+                play([
                     { player: Player.X(), row: 0, column: 0 },
                     { player: Player.O(), row: 1, column: 0 },
                     { player: Player.X(), row: 1, column: 1 },
