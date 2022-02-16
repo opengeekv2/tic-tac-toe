@@ -131,6 +131,10 @@ export default class TicTacToe {
         if (this.xHasWon()) {
             throw new GameOverError("Player X won");
         }
+
+        if (this.oHasWon()) {
+            throw new GameOverError("Player O won");
+        }
     }
 
     play(position: Position, player: Player): TictacToeState {

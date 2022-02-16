@@ -279,8 +279,19 @@ describe("Tic Tac Toe", () => {
             { player: Player.O(), row: 1, column: 1 }
         ];
 
+        const X_PLAYS_AFTER_O_WON = [
+            { player: Player.X(), row: 2, column: 2 },
+            { player: Player.O(), row: 0, column: 2 },
+            { player: Player.X(), row: 0, column: 1 },
+            { player: Player.O(), row: 1, column: 1 },
+            { player: Player.X(), row: 1, column: 0 },
+            { player: Player.O(), row: 2, column: 0 },
+            { player: Player.X(), row: 0, column: 0 },
+        ];
+
         it.each([
-            [ O_PLAYS_AFTER_X_WON ]
+            [ O_PLAYS_AFTER_X_WON ],
+            [ X_PLAYS_AFTER_O_WON ],
         ])("should prevent any player from playing after any player has won", (moves: TestMove[]) => {
             expect(() => {
                 play(moves);
