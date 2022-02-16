@@ -21,7 +21,7 @@ export interface Move {
 }
 
 export class Player {
-    private name: string
+    private readonly name: string
 
     private constructor(name: string) {
         this.name = name;
@@ -129,6 +129,10 @@ export default class TicTacToe {
         if (this.oHasWon()) {
             throw new GameOverError("Player O won");
         }
+
+        if (this.isTheBoardFull()) {
+            throw new GameOverError("The game is over as a tie");
+        }
     }
 
     play(position: Position, player: Player): TictacToeState {
@@ -156,13 +160,14 @@ export default class TicTacToe {
         if (true === this.oHasWon()) {
             return TictacToeState.O_WINS;
         }
-        if (this.moves.length === (this.BOARD_SIZE**2)) {
+        if (this.isTheBoardFull()) {
             return TictacToeState.TIE;
         }
 
-        if (this.moves.length > (this.BOARD_SIZE**2)) {
-            throw new GameOverError("The game is over as a tie");
-        }
         return Player.O().equals(this.playerTurn) ? TictacToeState.O_PLAYS : TictacToeState.X_PLAYS;
+    }
+
+    private isTheBoardFull(): boolean {
+        return this.moves.length === (this.BOARD_SIZE**2);
     }
 }
